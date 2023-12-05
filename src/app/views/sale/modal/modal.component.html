@@ -1,0 +1,34 @@
+<c-modal id="liveDemoModal" [visible]="saleService.visible" (visibleChange)="saleService.handleLiveDemoChange($event)">
+    <c-modal-header>
+        <h4 cModalTitle>Nova venda </h4>
+        <button (click)="saleService.toggleLiveDemo()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <span class="d-block mb-2 fw-bolder">Para quem você quer fazer uma venda</span>
+        <input aria-describedby="button-addon1" [formControl]="valueSearched" name="partName" aria-label="Example text with button addon" class="input-search"
+            cFormControl placeholder="Pesquisar clientes" />
+
+        <div *ngIf="studentSearchead$ | async as studentSearched">
+            <c-card class="container list_client mt-2 p-2" @filterAnimation *ngFor="let item of studentSearched" (click)="openSale(item)">
+                <div class="d-flex" >
+                    <c-avatar class="me-2" cTextColor="primary" shape="rounded-1" size="md" src="./assets/profile-404.svg"
+                        status="success">
+                    </c-avatar>
+                    <div class="container-identify">
+                        <span class="text-code">55456</span>
+                        <span class="text-name">{{ item.full_name }}</span>
+                    </div>
+                </div>
+            </c-card>
+        </div>
+
+        <button cButton variant="ghost" shape="rounded-pill" class="mt-4" size="sm">
+            <svg cIcon class="me-2" name="cil-plus"></svg>Novo cadastro
+        </button>
+    </c-modal-body>
+    <c-modal-footer>
+        <button (click)="saleService.toggleLiveDemo()" cButton color="secondary">
+            Fechar
+        </button>
+    </c-modal-footer>
+</c-modal>

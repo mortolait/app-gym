@@ -1,0 +1,22 @@
+.title{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    strong{
+        font-size: 1.2rem;
+    }
+}
+.card_data{
+    padding: 1rem 4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    div{
+        display: flex;
+        flex-direction: column;
+        line-height: 20px;
+        span:nth-child(2){
+            font-size: 1.5rem;
+        }
+    }
+}

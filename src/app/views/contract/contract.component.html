@@ -1,0 +1,36 @@
+<c-row>
+    <c-col md="8"></c-col>
+    <c-col md="4">
+        <c-alert color="success" class="d-flex align-items-end alert_success" fade [visible]="contractService.visible">
+            <svg [cIcon]="icons.cilCheckCircle" class="flex-shrink-0 me-2" size="xl"></svg>
+            <div>Contrato salvo com sucesso</div>
+        </c-alert>
+    </c-col>
+    <c-col md="4">
+        <c-card>
+            <c-card-header class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold fs-4">
+                    Contratos
+                </span>
+                
+                <a class="plus-product" (click)="goNewContract()">
+                    <svg [cIcon]="icons.cilPlus"  size="xxl" class="flex-shrink-0"></svg>
+                </a>
+            </c-card-header>
+            <c-card-body class="containerBoxList">
+                <div class="d-flex justify-content-between border p-2 rounded mb-2 " (click)="goPerfil(contract.id)"
+                    *ngFor="let contract of contractService.contracts">
+                    <div class="d-flex flex-column">
+                        <span class="fw-bold fs-4">{{contract.description}}</span>
+                        <span>{{contract.amount}} -<strong>{{contract.installments}} meses</strong></span>
+                    </div>
+                    <!-- <svg [cIcon]="icons.cilTrash" class="icon-trash flex-shrink-0"></svg> -->
+                </div>
+
+            </c-card-body>
+        </c-card>
+    </c-col>
+    <c-col md="8">
+        <router-outlet></router-outlet>
+    </c-col>
+</c-row>

@@ -1,0 +1,29 @@
+<div>
+    <c-col md="8"></c-col>
+    <c-col md="4">
+        <c-alert color="success" class="d-flex align-items-end alert_success" fade [visible]="saleService.visibleAlert">
+            <div class="d-flex align-items-center gap-2">
+                <svg cIcon name="cilCheckAlt" width="30" height="30"></svg>
+                <div class="alert-text">
+                    <!-- <p>Sucesso</p> -->
+                    <span>Venda finalizada</span>
+                </div>
+            </div>
+        </c-alert>
+    </c-col>
+    <div class="container-main d-flex  justify-content-between p-2">
+        <div class="d-flex align-items-center">
+            <c-avatar class="me-2" cTextColor="primary" shape="rounded-1" size="md" src="./assets/profile-404.svg">
+            </c-avatar>
+            <span class="name">{{saleService.selectedStudentSale?.full_name}}</span>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="container-process"  *ngFor="let item of saleService.processSale">
+                <span class="number" [@formButton] = "item.actived?'valid':'invalid'" [ngClass]="{activedProcess: item.actived}">{{ item.num }}</span>
+                <!-- <span class='process-text'>{{item.name}}</span> -->
+                <span>{{item.name}}</span>
+            </div>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>

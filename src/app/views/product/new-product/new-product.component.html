@@ -1,0 +1,51 @@
+<c-card @showState >
+    <c-card-header>
+        <span class="fw-bold fs-4">Novo</span>
+    </c-card-header>
+    <c-card-body>
+            <form cForm [formGroup]="formGroup" (ngSubmit)="register() ">
+                <c-row>
+                    <c-col md="8">
+                        <label cLabel for="description">Descrição</label>
+                        <input cFormControl id="description" type="text" sizing="sm" required formControlName="description" />
+                    </c-col>
+                    <c-col md="4">
+                        <label cLabel for="code">Código</label>
+                        <input cFormControl id="code" type="text" sizing="sm" required formControlName="code" />
+                    </c-col>
+                    <c-col md="6">
+                        <label cLabel for="selling_price">Preço de venda</label>
+                        <input cFormControl id="selling_price" class="text-left" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" sizing="sm" required formControlName="selling_price" />
+                    </c-col>
+                    <c-col md="6">
+                        <label cLabel for="purchase_price">Preço de compra</label>
+                        <input cFormControl id="purchase_price" class="text-left" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" sizing="sm" required formControlName="purchase_price" />
+                    </c-col>
+                    <c-col md="6">
+                        <label cLabel for="current_quantity">Quantidade atual</label>
+                        <input cFormControl id="current_quantity" type="number" sizing="sm" required formControlName="current_quantity" />
+                    </c-col>
+                    <c-col md="6">
+                        <label cLabel for="minimum_quantity">Quantidade mínima</label>
+                        <input cFormControl id="minimum_quantity" type="number" sizing="sm" required formControlName="minimum_quantity" />
+                    </c-col>
+                    <c-col md="6">
+                        <c-form-check>
+                            <input cFormCheckInput id="checkOne" formControlName="allows_sale_without_stock" type="checkbox" />
+                            <label cFormCheckLabel for="checkOne">Permite venda sem estoque</label>
+                          </c-form-check>
+                    </c-col>
+                    <c-col md="6" >
+                        <c-form-check>
+                            <input cFormCheckInput  formControlName="active"id="checkOne" type="checkbox" />
+                            <label cFormCheckLabel for="checkOne">Ativo</label>
+                          </c-form-check>
+                    </c-col>
+                    <c-col md="12" class="mt-4 d-flex gap-2">
+                        <button cButton color="primary" [@formButton]="formGroup.valid?'valid':'invalid'" [disabled]="!formGroup.valid" type="submit">Adicionar</button>
+                    </c-col>
+                   
+                </c-row>
+            </form>
+    </c-card-body>
+</c-card>

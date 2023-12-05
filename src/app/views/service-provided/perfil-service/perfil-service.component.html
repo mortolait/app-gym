@@ -1,0 +1,37 @@
+<c-card>
+    <c-card-header>
+        <span class="fw-bold fs-4">Perfil</span>
+    </c-card-header>
+    <c-card-body *ngIf="serviceProvided.selectedService">
+            <form cForm (ngSubmit)="update() ">
+                <c-row>
+                    <c-col md="8">
+                        <label cLabel for="name">Nome</label>
+                        <input cFormControl id="name" name="name" [(ngModel)]="serviceProvided.selectedService.title" type="text" sizing="sm" required  />
+                    </c-col>
+                    <c-col md="4">
+                        <label cLabel for="code">Código</label>
+                        <input cFormControl id="code" name="code" [(ngModel)]="serviceProvided.selectedService.code" type="text" sizing="sm" required  />
+                    </c-col>
+                    <c-col md="6">
+                        <label cLabel for="description">Descrição</label>
+                        <input cFormControl id="description" name="description" [(ngModel)]="serviceProvided.selectedService.description" sizing="sm" required  />
+                    </c-col>
+                    <c-col md="6">
+                        <label cLabel for="value">Valor</label>
+                        <input cFormControl currencyMask  id="value" class="text-left" name="value" sizing="sm" required [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" [(ngModel)]="serviceProvided.selectedService.amount" />
+                    </c-col>
+                    <c-col md="6" >
+                        <c-form-check>
+                            <input cFormCheckInput  [(ngModel)]="serviceProvided.selectedService.active"id="checkOne" name="active" type="checkbox" />
+                            <label cFormCheckLabel for="checkOne">Ativo</label>
+                          </c-form-check>
+                    </c-col>
+                    <c-col md="12" class="mt-4 d-flex gap-2">
+                        <button cButton color="primary" type="submit">Salvar</button>
+                    </c-col>
+                   
+                </c-row>
+            </form>
+    </c-card-body>
+</c-card>

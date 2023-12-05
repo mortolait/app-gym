@@ -1,0 +1,63 @@
+.container-main {
+    font-size: 0.8rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+
+    .name {
+        font-size: 1.5rem;
+    }
+}
+
+.container-process {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .number {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+        color: #fff;
+        height: 27px;
+        width: 27px;
+        line-height: 27px;
+        padding: 0.5rem;
+        border-radius: 50%;
+        text-align: center;
+        border: 1px solid #fff;
+    }
+
+    .process-text {
+        position: relative;
+        width: 122px;
+    }
+
+    .process-text::after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        width: 45px;
+        height: 1px;
+        background-color: #fff;
+        right: 0px;
+
+    }
+
+}
+
+.activedProcess {
+    background-color: #fff;
+    color: #000 !important;
+}
+.alert-text{
+    p{
+        margin: 0px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    span{
+        font-size: 1.2rem;
+    }
+}

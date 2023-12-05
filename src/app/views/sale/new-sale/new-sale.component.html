@@ -1,0 +1,261 @@
+<div>
+    <c-row>
+        <c-col sm="8">
+            <c-card class="mt-2">
+                <c-card-header>
+                    <c-nav variant="underline">
+                        <c-nav-item>
+                            <a [cTabContent]="tabContent1" *ngIf="this.selectedStudent?.type =='client' " [routerLink] [tabPaneIdx]="0" cNavLink>
+                                <svg cIcon class="me-2"></svg>
+                                Contratos
+                            </a>
+                        </c-nav-item>
+                        <c-nav-item>
+                            <a [cTabContent]="tabContent1" id="menu_register" [routerLink] [tabPaneIdx]="1" cNavLink>
+                                <svg cIcon class="me-2"></svg>
+                                Produtos
+                            </a>
+                        </c-nav-item>
+                        <c-nav-item>
+                            <a [cTabContent]="tabContent1" [routerLink] [tabPaneIdx]="2" cNavLink>
+                                <svg cIcon class="me-2"></svg>
+                                Serviços
+                            </a>
+                        </c-nav-item>
+                    </c-nav>
+                </c-card-header>
+                <c-card-body>
+                    <c-tab-content #tabContent1="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+                        <c-tab-pane class="p-3 preview" role="tabpanel">
+                            <c-row>
+                                <form cForm [formGroup]="formContract" (ngSubmit)="addContract()">
+                                    <c-row>
+                                        <c-col sm="8">
+                                            <label cLabel for="contract" sizing="sm">Escolha o contrato</label>
+                                            <select cFormControl id="sex" sizing="sm" cSelect
+                                                formControlName="contract">
+                                                <option *ngFor="let item of contractService.contracts"
+                                                    value="{{item.id}}">
+                                                    {{ item.description }}</option>
+                                            </select>
+                                        </c-col>
+                                        <c-col sm="4">
+                                            <label cLabel for="startDate" sizing="sm">Data de inicio</label>
+                                            <input 
+                                                cFormControl
+                                                sizing="sm" 
+                                                id="startDate" 
+                                                type="date"
+                                                formControlName="startDate" />
+                                        </c-col>
+                                    </c-row>
+                                    <c-row>
+                                        <c-col sm="{{formContract.get('discounts')?.value != 'none'? '6':'12'}}">
+                                            <label cLabel for="contract" sizing="sm">Desconto</label>
+                                            <select cFormControl id="sex" sizing="sm" cSelect
+                                                formControlName="discounts">
+                                                <option *ngFor="let item of discounts" value={{item.value}}>
+                                                    {{item.label}}</option>
+                                            </select>
+                                        </c-col>
+                                        <c-col sm="6" *ngIf="formContract.get('discounts')?.value != 'none'">
+                                            <label cLabel for="phone">Valor do desconto</label>
+                                            <input cFormControl sizing="sm" id="product" currencyMask
+                                                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+                                                formControlName="valueDiscounts" />
+                                        </c-col>
+                                    </c-row>
+                                    <c-col sm="12">
+                                        <label cLabel for="obs">Observações</label>
+                                        <textarea cFormControl id="obs" name="obs" rows="4"
+                                            formControlName="obs"></textarea>
+                                    </c-col>
+                                    <c-col>
+                                        <div class="d-flex justify-content-between">
+                                            <button cButton shape="rounded-pill" type="submit" variant="outline"
+                                                class="mt-4" size="sm" (click)="cancelSale()">
+                                                Cancelar venda
+                                            </button>
+                                            <button cButton shape="rounded-pill" type="submit" class="mt-4" size="sm"
+                                                [@formButton]="formContract.valid?'valid':'invalid'"
+                                                [disabled]="!formContract.valid">
+                                                <svg cIcon name="cil-plus"></svg>Adicionar
+                                            </button>
+                                        </div>
+                                    </c-col>
+                                </form>
+                            </c-row>
+                        </c-tab-pane>
+                        <c-tab-pane class="p-3 preview" role="tabpanel">
+                            <form [formGroup]="formProduct" (ngSubmit)="addProduct()"
+                                [@showContentTap]="active?'activeted':'default'">
+                                <c-row>
+                                    <c-col sm="8">
+                                        <label cLabel for="phone">Digite para encontrar o produto</label>
+                                        <input cFormControl sizing="sm" id="product" list="paises"
+                                            formControlName="product" (input)="searchProduct()" />
+                                        <c-card class="container_list_product">
+                                            <ul class="list_product">
+                                                <div *ngFor="let item of saleService.productSearched">
+                                                    <li (click)="selectProduct(item)">
+                                                        <span class="description fw-bold">{{item.description}}</span>
+                                                        <span class="price">{{item.selling_price |
+                                                            currency:'BRL'}}</span>
+                                                    </li>
+                                                    <hr>
+                                                </div>
+                                            </ul>
+                                        </c-card>
+                                    </c-col>
+                                    <c-col sm="4">
+                                        <label cLabel for="qtdproduct">Quantidade</label>
+                                        <input cFormControl sizing="sm" id="qtdproduct" min="1" formControlName="qtd"
+                                            type="number" />
+                                    </c-col>
+                                    <c-col sm="{{formProduct.get('discounts')?.value != 'none'? '6':'12'}}">
+                                        <label cLabel for="discounts" sizing="sm">Desconto</label>
+                                        <select cFormControl sizing="sm" id="discounts" formControlName="discounts"
+                                            sizing="sm" cSelect>
+                                            <option *ngFor="let item of discounts" value={{item.value}}>{{item.label}}
+                                            </option>
+                                        </select>
+                                    </c-col>
+                                    <c-col sm="6" *ngIf="formProduct.get('discounts')?.value != 'none'">
+                                        <label cLabel for="phone">Valor do desconto</label>
+                                        <input cFormControl sizing="sm" id="product" currencyMask
+                                            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+                                            formControlName="valueDiscounts" />
+                                    </c-col>
+                                    <c-col sm="12">
+                                        <label cLabel for="obs">Observações</label>
+                                        <textarea cFormControl id="obs" name="obs" formControlName="obs"
+                                            rows="4"></textarea>
+                                    </c-col>
+                                    <c-col>
+                                        <div class="d-flex justify-content-between">
+                                            <button cButton shape="rounded-pill" type="submit" variant="outline"
+                                                class="mt-4" size="sm" (click)="cancelSale()">
+                                                Cancelar venda
+                                            </button>
+                                            <button cButton [@formButton]="formProduct.valid?'valid':'invalid'"
+                                                [disabled]="!formProduct.valid" shape="rounded-pill" type="submit"
+                                                class="mt-4" size="sm">
+                                                <svg cIcon name="cil-plus"></svg>Adicionar
+                                            </button>
+                                        </div>
+                                    </c-col>
+                                </c-row>
+                            </form>
+
+                        </c-tab-pane>
+                        <c-tab-pane class="p-3 preview" role="tabpanel">
+                            <form [formGroup]="formService" (ngSubmit)="addServices()">
+                                <c-row>
+                                    <c-col sm="8">
+                                        <label cLabel for="qtdproduct">Escolha o serviço</label>
+                                        <select cFormControl sizing="sm" id="sex" sizing="sm" cSelect
+                                            formControlName="service">
+                                            <option *ngFor="let item of serviceProvided.services" value={{item.id}}>
+                                                {{item.title}}
+                                            </option>
+                                        </select>
+                                    </c-col>
+                                    <c-col sm="4">
+                                        <label cLabel for="qtdproduct">Quantidade</label>
+                                        <input cFormControl sizing="sm" id="qtdproduct" min="1" type="number"
+                                            formControlName="qtd" />
+                                    </c-col>
+                                    <c-col sm="{{formService.get('discounts')?.value != 'none'? '6':'12'}}">
+                                        <label cLabel for="discounts" sizing="sm">Desconto</label>
+                                        <select cFormControl sizing="sm" id="discounts" formControlName="discounts"
+                                            sizing="sm" cSelect>
+                                            <option *ngFor="let item of discounts" value={{item.value}}>{{item.label}}
+                                            </option>
+                                        </select>
+                                    </c-col>
+                                    <c-col sm="6" *ngIf="formService.get('discounts')?.value != 'none'">
+                                        <label cLabel for="phone">Valor do desconto</label>
+                                        <input cFormControl sizing="sm" id="product" currencyMask
+                                            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+                                            formControlName="valueDiscounts" />
+                                    </c-col>
+                                    <c-col sm="12">
+                                        <label cLabel for="obs">Observações</label>
+                                        <textarea cFormControl id="obs" name="obs" rows="4"
+                                            formControlName="obs"></textarea>
+                                    </c-col>
+                                    <c-col>
+                                        <div class="d-flex justify-content-between">
+                                            <button cButton shape="rounded-pill" type="submit" variant="outline"
+                                                class="mt-4" size="sm" (click)="cancelSale()">
+                                                Cancelar venda
+                                            </button>
+                                            <button cButton [@formButton]="formService.valid?'valid':'invalid'"
+                                                [disabled]="!formService.valid" shape="rounded-pill" type="submit"
+                                                class="mt-4" size="sm">
+                                                Adicionar
+                                            </button>
+                                        </div>
+                                    </c-col>
+                                </c-row>
+                            </form>
+                        </c-tab-pane>
+                    </c-tab-content>
+                </c-card-body>
+            </c-card>
+        </c-col>
+        <c-col sm="4">
+            <c-card class="mt-2">
+                <c-card-header>
+                    <h5 class="fw-bold">Itens a venda</h5>
+                </c-card-header>
+                <c-card-body>
+                    <div *ngFor="let item of saleService.sale.itens">
+                        <div class="sale_items">
+                            <div class="type_contrato">
+                                <span>
+                                    {{
+                                    item.type == 'contract'?'Contrato':
+                                    item.type == 'product'?'Produto':
+                                    item.type == 'service'?'Serviço':''
+                                    }}
+                                </span>
+                                <span>{{item.nameEntity}}</span>
+                            </div>
+                            <div class="sale_value">
+                                <a class="deleteSale" (click)="deleteSale(item)">
+                                    <svg cIcon name="cilTrash"></svg>
+                                </a>
+                                <span>{{ item.value | currency:'BRL'}}</span>
+                                <span *ngIf="item.discount != 'none'">{{item.valueDiscount | currency:'BRL'}}</span>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="sale_amount">
+                        <div>
+                            <span>Subtotal</span>
+                            <span>{{saleService.sale.amount | currency:'BRL'}}</span>
+                        </div>
+                        <div>
+                            <span>Desconto total</span>
+                            <span>{{saleService.sale.totalDiscount | currency:'BRL'}}</span>
+                        </div>
+                        <div>
+                            <span>Total a pagar</span>
+                            <span>{{saleService.sale.amount - saleService.sale.totalDiscount | currency:'BRL'}}</span>
+                        </div>
+                    </div>
+                </c-card-body>
+                <c-card-footer class="d-flex justify-content-end">
+                    <button cButton shape="rounded-pill"
+                        color="{{saleService.sale.itens.length > 0?'success':'secondary' }}" class="btn_receive"
+                        size="sm" disabled="{{saleService.sale.itens.length > 0? false:true}}"
+                        (click)="receivePayment()">
+                        Receber
+                    </button>
+                </c-card-footer>
+            </c-card>
+        </c-col>
+    </c-row>
+</div>

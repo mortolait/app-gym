@@ -1,0 +1,140 @@
+.container-main {
+    font-size: 0.8rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+
+    .name {
+        font-size: 1.5rem;
+    }
+}
+
+.container-process {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .number {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+        color: #fff;
+        height: 27px;
+        width: 27px;
+        line-height: 27px;
+        padding: 0.5rem;
+        border-radius: 50%;
+        text-align: center;
+        border: 1px solid #fff;
+    }
+
+    .process-text {
+        position: relative;
+        width: 122px;
+    }
+
+    .process-text::after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        width: 45px;
+        height: 1px;
+        background-color: #fff;
+        right: 0px;
+
+    }
+
+}
+
+.activedProcess {
+    background-color: #fff;
+    color: #000 !important;
+}
+
+.sale_items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .type_contrato {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+
+        span:first-child {
+            background-color: #eee;
+            font-size: 0.7rem;
+            padding: 2px;
+            border-radius: 4px;
+        }
+
+        span:nth-child(2) {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    }
+
+    .sale_value {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+
+        .deleteSale {
+            cursor: pointer;
+            color: #222;
+        }
+
+        .deleteSale:hover {
+            color: #e55353 !important;
+            transition: 0.5s;
+        }
+
+
+        span:nth-child(3) {
+            color: #e55353;
+            font-size: 12px;
+        }
+
+    }
+
+}
+.sale_amount {
+    background-color: #eee;
+    padding: 10px;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+    }
+    div:nth-child(2){
+        span:nth-child(2){
+            color:#e55353
+        }
+    }
+}
+.btn_receive{
+    color: #fff;
+}
+.container_list_product{
+    position: absolute;
+}
+.list_product{
+    width: 400px;
+    margin: 0px !important;
+    padding: 0px !important;
+    li{
+        padding: 10px;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .description{
+
+        }
+    }
+    :hover{
+        cursor: pointer;
+    }
+}

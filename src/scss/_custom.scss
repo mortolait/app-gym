@@ -1,0 +1,54 @@
+.margin-r{
+    margin-right: 4rem !important;
+}
+
+input[type="text"][class="form-control"][placeholder="Pesquisar por nome, email ou telefone"]{
+    width: 500px;
+}
+
+.avatar-perfil .avatar-img{
+    width: 90px ;
+    height: 90px;
+}
+// .alert_success{
+//     z-index: 9999;
+//     position: absolute;
+//     top: 65px;
+//     right: 0px;
+// }
+
+.alert_success{
+    z-index: 9999;
+    position: absolute;
+    top: 65px;
+    right: 0px;
+}
+
+.containerBoxList{
+    max-height: 60vh;
+    overflow-y: auto;
+    cursor: pointer;
+}
+.containerBoxList div:hover{
+    background-color: #eeeeee;
+}
+.containerBoxList div:active{
+    background-color: #eeeeee;
+}
+
+.plus-product{
+    color: #222;
+ }
+ .plus-product:hover{
+     cursor: pointer;
+ }
+ .text-left{
+    text-align: left !important
+ }
+
+ .items_sale{
+    margin-top: 4rem;
+    h2{
+        margin-bottom: 2rem;
+    }
+}

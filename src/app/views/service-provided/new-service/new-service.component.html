@@ -1,0 +1,39 @@
+<c-card @showState>
+    <c-card-header>
+        <span class="fw-bold fs-4">Novo</span>
+    </c-card-header>
+    <c-card-body *ngIf="serviceProvided.selectedService">
+        <form [formGroup]="formGroup" cForm (ngSubmit)="register() ">
+            <c-row>
+                <c-col md="8">
+                    <label cLabel for="name">Nome</label>
+                    <input cFormControl formControlName="title" id="name" name="name" type="text" sizing="sm"
+                        required />
+                </c-col>
+                <c-col md="4">
+                    <label cLabel for="code">Código</label>
+                    <input cFormControl formControlName="code" id="code" name="code" type="text" sizing="sm" required />
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="description">Descrição</label>
+                    <input cFormControl formControlName="description" id="description" name="description" sizing="sm"
+                        required />
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="value">Valor</label>
+                    <input cFormControl formControlName="amount" id="value" class="text-left" currencyMask
+                        [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" name="value" sizing="sm" required />
+                </c-col>
+                <c-col md="6">
+                    <c-form-check>
+                        <input cFormCheckInput formControlName="active" id="checkOne" name="active" type="checkbox" />
+                        <label cFormCheckLabel for="checkOne">Ativo</label>
+                    </c-form-check>
+                </c-col>
+                <c-col md="12" class="mt-4 d-flex gap-2">
+                    <button cButton color="primary" type="submit">Salvar</button>
+                </c-col>
+            </c-row>
+        </form>
+    </c-card-body>
+</c-card>

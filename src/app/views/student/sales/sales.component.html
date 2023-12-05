@@ -1,0 +1,91 @@
+<app-profile-sales></app-profile-sales>
+
+<c-container>
+    <c-row>
+        <c-col sm="12">
+            <div>
+                <h4>Histórico de vendas</h4>
+            </div>
+        </c-col>
+    </c-row>
+    <c-row>
+        <c-col sm="12">
+            <c-smart-table #smartTable="cSmartTable" clickableRows [columns]="columns" header pagination
+                [items]="studentService.salesById" pagination (rowClick)="toggleDetails($event)"
+                [sorterValue]="{ column: 'name', state: 'asc' }" [tableBodyProps]="{align: 'middle'}"
+                [tableHeadProps]="{color: 'warning'}">
+                <ng-template cTemplateId="tableDetails" let-item="item">
+                    <div [visible]="this.details_visible[item.id]===true" cCollapse>
+                        <c-card class="rounded-0">
+                            <c-card-body>
+                                <div class="container_items_sale">
+                                    <div *ngIf="item.contracts.length > 0">
+                                        <h4>Contratos ({{item.contracts.length}})</h4>
+                                        <div class="list-contract" *ngFor="let i of item.contracts">
+                                            <span>{{i.contract.description}}</span>
+                                            <span class="value_contract">{{i.contract.amount | currency:'BRL'}}</span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="item.products.length > 0">
+                                        <h4>Produtos ({{item.products.length}})</h4>
+                                        <div class="list-contract" *ngFor="let i of item.products">
+                                            <span>{{i.product.description}}</span>
+                                            <span class="value_contract">{{i.product.selling_price |
+                                                currency:'BRL'}}</span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="item.services.length > 0">
+                                        <h4>Serviços ({{item.services.length}})</h4>
+                                        <div class="list-contract" *ngFor="let i of item.services">
+                                            <span>{{i.service.description}}</span>
+                                            <span class="value_contract">{{i.service.amount | currency:'BRL'}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="profile_sale">
+                                        <a (click)="studentService.showProfileSale(item)"  >
+                                            <img src="../../../../assets/eye-svgrepo-com.svg"  [@formButton]="teste?'valid':invalid" width="24"  height="24" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </c-card-body>
+                        </c-card>
+                    </div>
+                </ng-template>
+                <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td [cTableActive]="smartTable.tableDataCellProps(item, columnName)?.['active']"
+                        [cTableColor]="smartTable.tableDataCellProps(item, columnName)?.color"
+                        [cAlign]="smartTable.tableDataCellProps(item, columnName)?.align"
+                        [ngClass]="smartTable.tableDataCellClasses(item, columnName)">
+                        <ng-container [ngSwitch]="columnName">
+                            <ng-container *ngSwitchCase="'statusPayment'">
+                                <c-badge [color]="getBadge(tdContent)">
+                                    {{(item[columnName]) | statusPayment}}
+                                </c-badge>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'create_at'">
+                                {{(item[columnName]) | date}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'valueDiscount'">
+                                {{(item[columnName]) | currency:'BRL'}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'total_amount'">
+                                {{(item[columnName]) - item['total_received'] | currency:'BRL'}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'total_received'">
+                                {{(item[columnName]) | currency:'BRL'}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'show'">
+                                <button cButton color="primary" variant="outline" size="sm">ver</button>
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                {{tdContent}}
+                            </ng-container>
+
+                        </ng-container>
+                    </td>
+                </ng-template>
+            </c-smart-table>
+        </c-col>
+    </c-row>
+</c-container>

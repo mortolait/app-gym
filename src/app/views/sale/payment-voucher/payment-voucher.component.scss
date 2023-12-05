@@ -1,0 +1,45 @@
+.receipt_payment {
+    max-height: 60vh;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: italic;
+
+    .header_receipt {
+        display: flex;
+        flex-direction: column;
+    }
+
+    div {
+        width: 300px;
+        display: flex;
+        gap: 10px;
+        margin-bottom: 1rem;
+    }
+}
+
+.hasContract {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+
+    div {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 10px;
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+
+        }
+
+        a:hover {
+            color: #321fdb;
+            transition: 0.5s;
+        }
+    }
+}

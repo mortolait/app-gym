@@ -1,0 +1,97 @@
+<div class="container p-2">
+    
+    <c-row>
+        <c-col sm="8">
+            <c-card>
+                <c-card-header>
+                    <span class="fw-bold">Recibo</span>
+                </c-card-header>
+                <c-card-body class="receipt_payment">
+                    <div class="header_receipt">
+                        <p>ACADEMIA</p>
+                        <span>-----------------------------------------------</span>
+                        <p>RECIBO DE PAGAMENTO</p>
+                        <span>-----------------------------------------------</span>
+                    </div>
+                    <br>
+                    <div>
+                        <span>Codigo da venda:</span>
+                        <span>{{saleService.salesReceipt.codeSale}}</span>
+                    </div>
+                    <br>
+                    <div>
+                        <span>Data:</span>
+                        <span>{{saleService.salesReceipt.dateSale | date:'short'}}</span>
+                    </div>
+                    <br>
+                    <div>
+                        <span>Cliente:</span>
+                        <span>{{saleService.salesReceipt.client}}</span>
+                    </div>
+                    <br>
+                    <div>
+                        <span>Operador:</span>
+                        <span>Lucas mortola</span>
+                    </div>
+                    <br>
+                    <span>-----------------------------------------------</span>
+                    <br>
+                    <div>
+                        <p>Itens</p>
+                        <div *ngFor="let item of saleService.salesReceipt.itens let i = index">
+                            <p>
+                                {{i + 1}} - {{item.nameEntity}}
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Recebimentos:</p>
+                        <div *ngFor="let item of saleService.salesReceipt.received">
+                                <p>{{item.type | formPayment}}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <span>Valor total Recebido:</span>
+                        <span>
+                            {{saleService.salesReceipt.totalReceived | currency:'BRL'}}
+                        </span>
+                    </div>
+                </c-card-body>
+                <c-card-footer>
+                    <button cButton size="sm" color="dark" (click)="printReceipt()">Imprimir recibo</button>
+                </c-card-footer>
+            </c-card>
+        </c-col>
+        <c-col sm="4">
+            <c-card>
+                <c-card-header>
+                    <span class="fw-bold">Contratos</span>
+                </c-card-header>
+                <c-card-body>
+                    <div *ngIf="contractSale != null else notHaveContract">
+                        <div class="hasContract">
+                            <span>{{contractSale.nameEntity}}</span>
+                            <div>
+                                <a (click)="printContract()" title="Imprimir"><svg cIcon name="cilPrint" size="lg"
+                                        class="me-1"></svg></a>
+                                <a (click)="toSign()" title="Aceitar contrato"><svg cIcon name="cilPenAlt" size="lg"
+                                        class="me-1"></svg></a>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #notHaveContract>
+                        <p class="text-center mb-0">Não há contratos</p>
+
+                    </ng-template>
+                </c-card-body>
+                <c-card-footer>
+                    <div class="d-flex justify-content-between">
+                        <button cButton size="sm" variant="outline" shape="rounded-pill" (click)="goProfile()">Ir para o perfil</button>
+                        <button cButton size="sm" (click)="newSale()" shape="rounded-pill">
+                            <svg cIcon name="cilCart" size="lg" class="me-1"></svg>Nova venda</button>
+                    </div>
+                </c-card-footer>
+            </c-card>
+        </c-col>
+    </c-row>
+</div>

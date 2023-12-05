@@ -1,0 +1,170 @@
+<!-- <button [cModalToggle]="staticBackdropModal.id" cButton>Launch static backdrop modal</button> -->
+
+<c-modal [visible]="visible" backdrop="static" id="staticBackdropModal" size="sm">
+    <c-modal-header>
+        <h5 cModalTitle>Saldo devedor</h5>
+        <button cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <c-row>
+            <p>Gerar saldo devedor com vencimento</p>
+            <c-date-picker [date]="date" size="sm"></c-date-picker>
+        </c-row>
+    </c-modal-body>
+    <c-modal-footer>
+        <button cButton color="secondary" (click)="closeModal()" size="sm">Cancelar</button>
+        <button cButton color="success" size="sm" (click)="confirmOutstandingBalance()">Confirmar</button>
+    </c-modal-footer>
+</c-modal>
+<div>
+    <c-row>
+        <c-col sm="8">
+            <c-card class="mt-2">
+                <c-card-header>
+                    <c-nav variant="underline">
+                        <c-nav-item>
+                            <a cNavLink [cTabContent]="tabContent1" [routerLink] [tabPaneIdx]="0" cNavLink>
+                                <svg cIcon class="me-2"></svg>
+                                Dinheiro
+                            </a>
+                        </c-nav-item>
+                        <c-nav-item>
+                            <a [cTabContent]="tabContent1" id="menu_register" [routerLink] [tabPaneIdx]="1" cNavLink>
+                                <svg cIcon class="me-2"></svg>
+                                Pix
+                            </a>
+                        </c-nav-item>
+                        <!-- <c-nav-item>
+                            <a [cTabContent]="tabContent1" [routerLink] [tabPaneIdx]="2" cNavLink>
+                                <svg cIcon class="me-2"></svg>
+                                Cartão
+                            </a>
+                        </c-nav-item> -->
+                    </c-nav>
+                </c-card-header>
+                <c-card-body>
+                    <c-tab-content #tabContent1="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+                        <c-tab-pane class="p-3 preview" role="tabpanel">
+                            <form cForm #f="ngForm" (ngSubmit)="addPaymentPaperMoney(f)">
+                                <c-card>
+                                    <c-card-body>
+                                        <c-row>
+                                            <c-col sm="6">
+                                                <label cLabel for="paymentPaper">Valor</label>
+                                                <input cFormControl sizing="sm" id="paymentPaper" currencyMask
+                                                    [(ngModel)]="valueMoney" name="paymentPaper" #paymentPaper="ngModel"
+                                                    ngModel class="text-left"
+                                                    [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+                                            </c-col>
+                                        </c-row>
+                                    </c-card-body>
+                                    <c-card-footer>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex gap-2">
+                                                <button cButton size="sm" (click)="backSale()" variant="outline"
+                                                    shape="rounded-pill">Escolher
+                                                    mais Itens</button>
+                                                <button cButton size="sm" variant="outline" (click)="cancelSale()"
+                                                    shape="rounded-pill">Cancelar
+                                                    venda</button>
+                                            </div>
+                                            <button cButton size="sm" type="submit"
+                                                shape="rounded-pill">Adicionar</button>
+                                        </div>
+                                    </c-card-footer>
+                                </c-card>
+                            </form>
+                        </c-tab-pane>
+                        <c-tab-pane class="p-3 preview" role="tabpanel">
+                            <form cForm #fp="ngForm" (ngSubmit)="addPaymentPixMoney(fp)">
+                                <c-card>
+                                    <c-card-body>
+                                        <c-row>
+                                            <c-col sm="6">
+                                                <label cLabel for="paymentPix">Valor</label>
+                                                <input cFormControl sizing="sm" id="paymentPix" currencyMask
+                                                    [(ngModel)]="valueMoney" name="paymentPix" #paymentPix="ngModel"
+                                                    ngModel class="text-left"
+                                                    [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+                                            </c-col>
+                                        </c-row>
+                                    </c-card-body>
+                                    <c-card-footer>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex gap-2">
+                                                <button cButton size="sm" (click)="backSale()" variant="outline"
+                                                    shape="rounded-pill">Escolher
+                                                    mais Itens</button>
+                                                <button cButton size="sm" variant="outline" (click)="cancelSale()"
+                                                    shape="rounded-pill">Cancelar
+                                                    venda</button>
+                                            </div>
+                                            <button cButton size="sm" type="submit"
+                                                shape="rounded-pill">Adicionar</button>
+                                        </div>
+                                    </c-card-footer>
+                                </c-card>
+                            </form>
+                        </c-tab-pane>
+                        <c-tab-pane class="p-3 preview" role="tabpanel">
+                            <c-row>
+                                <form cForm>
+                                    <h1>Cartão</h1>
+                                </form>
+                            </c-row>
+                        </c-tab-pane>
+                        <!-- Additional c-tab-pane elements -->
+                    </c-tab-content>
+                </c-card-body>
+            </c-card>
+        </c-col>
+        <c-col sm="4">
+            <c-card class="mt-2">
+                <c-card-header>
+                    <h5 class="fw-bold">Recebimentos</h5>
+                </c-card-header>
+                <c-card-body>
+                    <div class="resume_payments" *ngFor="let item of saleService.sale.received">
+                        <span>{{item.type | formPayment}}</span>
+                        <div class="value_payment">
+                            <span>{{item.value | currency:'BRL'}}</span>
+                            <a class="deleteSale" (click)="removePayment(item)">
+                                <svg cIcon name="cilTrash"></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="resume_sale">
+                        <div>
+                            <span>Valor da venda</span>
+                            <span>{{saleService.sale.amount - saleService.sale.totalDiscount | currency:'BRL'}}</span>
+                        </div>
+                        <div>
+                            <span>Total recebido</span>
+                            <span>{{saleService.sale.totalReceived | currency:'BRL'}}</span>
+                        </div>
+                        <div>
+                            <span>Crédito gerado</span>
+                            <span>{{(saleService.sale.totalReceived - (saleService.sale.amount -
+                                saleService.sale.totalDiscount)>0?saleService.sale.totalReceived -
+                                (saleService.sale.amount - saleService.sale.totalDiscount):0) | currency:'BRL'}}</span>
+                        </div>
+                        <div>
+                            <span class="fw-bold">Total a Pagar</span>
+                            <span class="fw-bold">{{((saleService.sale.amount - saleService.sale.totalDiscount) -
+                                saleService.sale.totalReceived > 0?(saleService.sale.amount -
+                                saleService.sale.totalDiscount) - saleService.sale.totalReceived:0) |
+                                currency:'BRL'}}</span>
+                        </div>
+                    </div>
+                </c-card-body>
+                <c-card-footer class="d-flex ">
+                    <button cButton shape="rounded-pill" class="btn_receive" color="success" size="sm"
+                        (click)="finishSale()">
+                        Finalizar venda
+                    </button>
+                </c-card-footer>
+            </c-card>
+        </c-col>
+    </c-row>
+</div>

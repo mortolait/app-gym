@@ -1,0 +1,31 @@
+
+  .title-white{
+    color: #fff;
+  }
+  #aside-new-student{
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 1rem;
+    overflow: scroll;
+  }
+  #aside-new-student:not(.hide){
+    width: 35rem;
+  }
+  .form-btn {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 5px !important;
+    /* position: fixed;
+    bottom: 0; */
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #fafafa;
+    
+  }
+  .form-student{
+    position: relative !important;
+    margin-bottom: 10px; 
+  }
+  .cursor-pointer{
+    cursor: pointer;
+  }

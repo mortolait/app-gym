@@ -1,0 +1,314 @@
+
+
+<c-container fluid >
+  <c-toaster [placement]="position" class="p-3" position="fixed">
+    <c-toast
+      (timer)="onTimerChange($event)"
+      (visibleChange)="onVisibleChange($event)"
+      [visible]="visible"
+      [delay]="3000"
+      color="light"
+      >
+      <c-toast-header>
+        <svg cIcon name="cilTrash" size="xl" title="Paper Plane Icon"></svg>
+      </c-toast-header>
+      <c-toast-body>
+        <h5>Aluno excluido !</h5>
+        <c-progress thin>
+          <c-progress-bar [value]="percentage"></c-progress-bar>
+        </c-progress>
+      </c-toast-body>
+    </c-toast>
+  </c-toaster>
+  <c-row>
+    <c-col md="12">
+      <c-card>
+        <!-- <c-card-header>
+          <c-input-group class="p-2">
+            <div cButton color="secondary" id="button-addon1" type="button" variant="outline">
+              <svg cIcon name="cilSearch" size="lg"></svg>
+            </div>
+            <input aria-describedby="button-addon1" aria-label="Example text with button addon" class="input-search" cFormControl placeholder="Pesquisar clientes" />
+          </c-input-group>
+        </c-card-header> -->
+        <c-card-body>
+          <c-nav variant="tabs">
+            <a [active]="true" [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="0" cNavLink>Todos</a>
+            <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="1" cNavLink>Clientes</a>
+            <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="2" cNavLink>Oportunidades</a>
+          </c-nav>
+
+          <c-tab-content #tabContent="cTabContent">
+            <c-tab-pane class="p-3">
+              <c-smart-table 
+              *ngIf="service.students.length > 0 else withoutStudents"
+              #smartTable="cSmartTable"
+              activePage="1"
+              clickableRows
+              [columnFilter]="true"
+              [columnSorter]="true"
+              [columns]="columns"
+              header
+              selectable
+              [itemsPerPageSelect]="true"
+              [itemsPerPage]="10"
+              [items]="service.students"
+              (rowClick)="showInfo($event)"
+              pagination
+              [sorterValue]="{ column: 'name', state: 'asc' }"
+              [tableBodyProps]="{ align: 'middle' }"
+              tableFilterLabel=""	
+              tableFilterPlaceholder="Pesquisar por nome, email ou telefone"
+              [tableProps]="{ hover: true, striped: true, responsive: true }"
+            >
+  
+              <ng-template cTemplateId="tableDetails" let-item="item">
+                <div
+                [visible]="this.details_visible[item.id] === true"
+                  cCollapse
+                >
+                  <c-card class="rounded-0">
+                    <c-card-body>
+                      <h5>{{ item["full_name"] }}</h5>
+                      <p class="text-muted">
+                        Objetivo: {{ item["goals"] }}
+                      </p>
+                    </c-card-body>
+                    <c-card-footer>
+                      <button cButton color="info" size="sm" (click)="perfilStudent(item['id'])">
+                        Perfil
+                      </button>
+                      <button cButton class="ms-1" color="danger" size="sm" (click)="deleteStudent(students,item['id'])">
+                        Excluir
+                      </button>
+                    </c-card-footer>
+                  </c-card>
+                </div>
+              </ng-template>
+              <ng-template
+                cTemplateId="tableData"
+                let-columnName="columnName"
+                let-item="item"
+                let-tdContent="tdContent"
+              >
+                <td
+                  [cTableActive]="smartTable.tableDataCellProps(item, columnName)?.['active']"
+                  [cTableColor]="
+                    smartTable.tableDataCellProps(item, columnName)?.color
+                  "
+                  [cAlign]="
+                    smartTable.tableDataCellProps(item, columnName)?.align
+                  "
+                  [ngClass]="smartTable.tableDataCellClasses(item, columnName)"
+                >
+                  <ng-container [ngSwitch]="columnName">
+                    <ng-container *ngSwitchCase="'statusContract'">
+                      <c-badge [color]="getBadge(tdContent)">
+                        {{ item[columnName] | statusStudentContract}}
+                      </c-badge>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'show'" class="py-2">
+                      <button
+                        (click)="toggleDetails(item['id'])"
+                        cButton
+                        color="primary"
+                        size="sm"
+                        variant="outline"
+                      >
+                        Ver
+                      </button>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                      {{ tdContent }}
+                    </ng-container>
+                  </ng-container>
+                </td>
+              </ng-template>
+            </c-smart-table>
+            </c-tab-pane>
+
+            <c-tab-pane class="p-3">
+              <c-smart-table
+              *ngIf="service.students.length > 0 else withoutStudents"
+              #smartTable="cSmartTable"
+              activePage="1"
+              clickableRows
+              [columnFilter]="true"
+              [columnSorter]="true"
+              [columns]="columns"
+              header
+              selectable
+              [itemsPerPageSelect]="true"
+              [itemsPerPage]="10"
+              [items]="service.clients"
+              (rowClick)="showInfo($event)"
+              pagination
+              [sorterValue]="{ column: 'name', state: 'asc' }"
+              [tableBodyProps]="{ align: 'middle' }"
+              tableFilterLabel=""	
+              tableFilterPlaceholder="Pesquisar por nome, email ou telefone"
+              [tableProps]="{ hover: true, striped: true, responsive: true }"
+            >
+  
+              <ng-template cTemplateId="tableDetails" let-item="item">
+                <div
+                [visible]="this.details_visible[item.id] === true"
+                  cCollapse
+                >
+                  <c-card class="rounded-0">
+                    <c-card-body>
+                      <h5>{{ item["full_name"] }}</h5>
+                      <p class="text-muted">
+                        Objetivo: {{ item["goals"] }}
+                      </p>
+                    </c-card-body>
+                    <c-card-footer>
+                      <button cButton color="info" size="sm" (click)="perfilStudent(item['id'])">
+                        Perfil
+                      </button>
+                      <button cButton class="ms-1" color="danger" size="sm" (click)="deleteStudent('clients',item['id'])">
+                        Excluir
+                      </button>
+                    </c-card-footer>
+                  </c-card>
+                </div>
+              </ng-template>
+              <ng-template
+                cTemplateId="tableData"
+                let-columnName="columnName"
+                let-item="item"
+                let-tdContent="tdContent"
+              >
+                <td
+                  [cTableActive]="smartTable.tableDataCellProps(item, columnName)?.['active']"
+                  [cTableColor]="
+                    smartTable.tableDataCellProps(item, columnName)?.color
+                  "
+                  [cAlign]="
+                    smartTable.tableDataCellProps(item, columnName)?.align
+                  "
+                  [ngClass]="smartTable.tableDataCellClasses(item, columnName)"
+                >
+                  <ng-container [ngSwitch]="columnName">
+                    <ng-container *ngSwitchCase="'statusContract'">
+                      <c-badge [color]="getBadge(tdContent)">
+                        {{ item[columnName] | statusStudentContract }}
+                      </c-badge>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'show'" class="py-2">
+                      <button
+                        (click)="toggleDetails(item['id'])"
+                        cButton
+                        color="primary"
+                        size="sm"
+                        variant="outline"
+                      >
+                        Ver
+                      </button>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                      {{ tdContent }}
+                    </ng-container>
+                  </ng-container>
+                </td>
+              </ng-template>
+            </c-smart-table>
+            </c-tab-pane>
+            <c-tab-pane class="p-3">
+              <c-smart-table
+              *ngIf="service.students.length > 0 else withoutStudents"
+              #smartTable="cSmartTable"
+              activePage="1"
+              clickableRows
+              [columnFilter]="true"
+              [columnSorter]="true"
+              [columns]="columns"
+              header
+              selectable
+              [itemsPerPageSelect]="true"
+              [itemsPerPage]="10"
+              [items]="service.leads"
+              (rowClick)="showInfo($event)"
+              pagination
+              [sorterValue]="{ column: 'name', state: 'asc' }"
+              [tableBodyProps]="{ align: 'middle' }"
+              tableFilterLabel=""	
+              tableFilterPlaceholder="Pesquisar por nome, email ou telefone"
+              [tableProps]="{ hover: true, striped: true, responsive: true }"
+            >
+  
+              <ng-template cTemplateId="tableDetails" let-item="item">
+                <div
+                [visible]="this.details_visible[item.id] === true"
+                  cCollapse
+                >
+                  <c-card class="rounded-0">
+                    <c-card-body>
+                      <h5>{{ item["full_name"] }}</h5>
+                      <p class="text-muted">
+                        Objetivo: {{ item["goals"] }}
+                      </p>
+                    </c-card-body>
+                    <c-card-footer>
+                      <button cButton color="info" size="sm" (click)="perfilStudent(item['id'])">
+                        Perfil
+                      </button>
+                      <button cButton class="ms-1" color="danger" size="sm" (click)="deleteStudent('leads',item['id'])">
+                        Excluir
+                      </button>
+                    </c-card-footer>
+                  </c-card>
+                </div>
+              </ng-template>
+              <ng-template
+                cTemplateId="tableData"
+                let-columnName="columnName"
+                let-item="item"
+                let-tdContent="tdContent"
+              >
+                <td
+                  [cTableActive]="smartTable.tableDataCellProps(item, columnName)?.['active']"
+                  [cTableColor]="
+                    smartTable.tableDataCellProps(item, columnName)?.color
+                  "
+                  [cAlign]="
+                    smartTable.tableDataCellProps(item, columnName)?.align
+                  "
+                  [ngClass]="smartTable.tableDataCellClasses(item, columnName)"
+                >
+                  <ng-container [ngSwitch]="columnName">
+                    <ng-container *ngSwitchCase="'statusContract'">
+                      <c-badge [color]="getBadge(tdContent)">
+                        {{ item[columnName] | statusStudentContract }}
+                      </c-badge>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'show'" class="py-2">
+                      <button
+                        (click)="toggleDetails(item['id'])"
+                        cButton
+                        color="primary"
+                        size="sm"
+                        variant="outline"
+                      >
+                        Ver
+                      </button>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                      {{ tdContent }}
+                    </ng-container>
+                  </ng-container>
+                </td>
+              </ng-template>
+            </c-smart-table>
+            </c-tab-pane>
+
+            <ng-template #withoutStudents>
+              <p>Não há alunos cadastrados</p>
+            </ng-template>
+          </c-tab-content>
+
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>

@@ -1,0 +1,96 @@
+<c-sidebar #aside1="cSidebar" class="d-print-none hide sibar_lead" colorScheme="light" id="aside-new-student" overlaid
+  placement="end" size="xl">
+  <c-card *ngIf="formNotSubmitted == true">
+    <c-card-header>
+      <div class="d-flex justify-content-between align-items-center">
+        <h4>Cadastrar Oportunidade</h4>
+        <button cButtonClose cSidebarToggle="aside-new-student" class="me-2" toggle="visible"></button>
+      </div>
+    </c-card-header>
+    <c-card-body>
+      <form cForm #formStudent  class="form-student" [formGroup]="formGroup" (ngSubmit)="onSubmit() " #customStylesForm="ngForm"
+        [validated]="customStylesValidated">
+        <c-row style="position:relative">
+          <c-col md="12">
+            <label cLabel for="fullName">Nome Completo</label>
+            <input cFormControl id="fullName" type="text" required formControlName="fullName" />
+            <c-form-feedback [valid]="false">Por favor digite o nome .</c-form-feedback>
+          </c-col>
+          <c-col md="12">
+            <label cLabel for="sex">Sexo</label>
+            <select cFormControl id="sex" cSelect formControlName="sex">
+              <option value="male">Masculino</option>
+              <option value="female">Feminino</option>
+              <option value="other">Outro</option>
+            </select>
+          </c-col>
+          <c-col md="12">
+            <label cLabel for="phone">Número de Telefone</label>
+            <input mask="(00) 0 0000-0000" cFormControl id="phone" type="tel" required formControlName="phone" />
+            <c-form-feedback [valid]="false">Por favor digite o nome .</c-form-feedback>
+          </c-col>
+          <c-col md="12">
+            <label cLabel for="email">E-mail</label>
+            <input cFormControl id="email" type="email" formControlName="email" />
+          </c-col>
+          <c-col md="12">
+            <label cLabel for="how_arrived">Como chegou</label>
+            <select cFormControl id="how_Arrived" cSelect formControlName="how_arrived">
+              <option value="personal">Pessoal</option>
+              <option value="email">Email</option>
+              <option value="phone">Telefone</option>
+              <option value="facebook">Facebook</option>
+              <option value="instagram">Instagram</option>
+              <option value="whatsapp">Whatsapp</option>
+              <option value="other">Outro</option>
+            </select>
+          </c-col>
+          <c-col md="12" class="form-btn">
+            <button cButton color="primary" type="submit">Salvar</button>
+            <button cButton color="primary" variant="outline" toggle="visible"
+              cSidebarToggle="aside-new-student">Cancelar</button>
+          </c-col>
+        </c-row>
+      </form>
+    </c-card-body>
+  </c-card>
+  <div  *ngIf="formNotSubmitted == false">
+    <c-card>
+      <c-card-header>
+        <div class="d-flex justify-content-between align-items-center">
+          <h4>Converter e vender</h4>
+          <button cButtonClose cSidebarToggle="aside-new-student" (click)="backForm()" class="me-2" toggle="visible"></button>
+        </div>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-center mt-2 mb-4 text-success">Oportunidade salva com sucesso!</p>
+        <div class="d-flex justify-content-center mb-2">
+          <c-avatar src="assets/img/avatars/1.jpg" size="xl"></c-avatar>
+        </div>
+        <h2 class="text-center mb-4">teste</h2>
+
+        <div class="d-flex justify-content-center mb-4">
+          <button  cButton color="primary" toggle="visible" cSidebarToggle="aside-new-student" (click)="convert()">Converter e vender</button>
+        </div>
+        <div class="d-flex justify-content-between border align-items-center p-2 mb-2">
+          <p class="mb-0">Criar novo Cadastro</p>
+          <div class="d-flex align-items-center text-primary">
+            <svg cIcon class="me-2" name="cilUserPlus" size="xl" title="Paper Plane Icon"></svg>
+            <a class="mb-0 cursor-pointer" (click)="backForm()">Novo cadastro</a>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between border align-items-center p-2">
+          <p class="mb-0">Vender produto/serviço</p>
+          <div class="d-flex align-items-center text-primary">
+            <svg cIcon class="me-2" name="cilCart" size="xl" title="Paper Plane Icon"></svg>
+            <a class="mb-0 cursor-pointer">Nova venda</a>
+          </div>
+        </div>
+      </c-card-body>
+      <c-card-footer>
+        <button cButton cSidebarToggle="aside-new-student" (click)="backForm()" class="me-2" toggle="visible">Fechar</button>
+      </c-card-footer>
+    </c-card>
+  </div>
+</c-sidebar>

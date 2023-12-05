@@ -1,0 +1,40 @@
+<c-card>
+    <c-card-header>
+        <span class="fw-bold fs-4">Perfil</span>
+    </c-card-header>
+    <c-card-body *ngIf="contractService.contract">
+        <form cForm (ngSubmit)="update()" >
+            <c-row>
+                <c-col md="6">
+                    <label cLabel for="description">Nome do contrato</label>
+                    <input cFormControl name="description" type="text" sizing="sm" required
+                        [(ngModel)]="contractService.contract.description" />
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="code">Code</label>
+                    <input cFormControl id="code" sizing="sm" type="text" name="code" required [(ngModel)]="contractService.contract.code"/> 
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="amount">Valor total do contrato</label>
+                    <input cFormControl currencyMask  class="text-left" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" name="amount"  sizing="sm" required
+                        [(ngModel)]="contractService.contract.amount" />
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="installments">Duração</label>
+                    <input cFormControl name="installments" sizing="sm" min="1" max="12" type="number" required
+                        [(ngModel)]="contractService.contract.installments" />
+                </c-col>
+                <c-col md="6" >
+                    <c-form-check>
+                        <input cFormCheckInput [(ngModel)]="contractService.contract.active" id="checkOne" name="active" type="checkbox" />
+                        <label cFormCheckLabel for="checkOne">Ativo</label>
+                      </c-form-check>
+                </c-col>
+                <c-col md="12" class="mt-4 d-flex gap-2">
+                    <button cButton color="primary" type="submit">Salvar</button>
+                </c-col>
+            </c-row>
+        </form>
+
+    </c-card-body>
+</c-card>

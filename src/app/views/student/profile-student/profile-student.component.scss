@@ -1,0 +1,78 @@
+.form-btn{
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 5px !important;
+}
+.header-card-profile{
+  height: 150px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url('../../../../assets/images/crossfit-1126999_1920.jpg');
+  background-position: center;
+  object-fit: cover;
+  background-size: cover;
+}
+.color-white{
+  color: white;
+}
+.ml-4{
+  margin-left: 2rem;
+}
+.ml-2{
+  margin-left: 0.5rem;
+}
+.img-avatar{
+  position: absolute;
+  top: 40px;
+  left: 0px;
+
+}
+.nav_perfil_student{
+  display: flex;
+  justify-content: start;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
+}
+ul{
+  padding: 0.5rem;
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+ul li{
+  list-style: none;
+}
+ul li a{
+  text-decoration: none;
+  color: #fff;
+  margin-bottom: 0px;
+}
+.nav-profile{
+  margin-left: 6rem;
+}
+
+ul li a:hover{
+  color: #fff;
+  text-decoration: underline;
+  margin-bottom: 0px;
+  transition: 1s;
+}
+
+.info-profile{
+  div{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  div :first-child{
+    font-weight: bold;
+  }
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+//girar a caneta no hover
+.cursor-pointer:hover{
+  transform: rotate(360deg);
+  transition: 1s;
+}

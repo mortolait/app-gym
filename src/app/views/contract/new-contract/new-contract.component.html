@@ -1,0 +1,39 @@
+<c-card @showState>
+    <c-card-header>
+        <span class="fw-bold fs-4">Novo contrato</span>
+    </c-card-header>
+    <c-card-body>
+
+        <form cForm [formGroup]="formGroup" (ngSubmit)="register() " >
+            <c-row>
+                <c-col md="6">
+                    <label cLabel for="description">Nome do contrato</label>
+                    <input cFormControl id="description" sizing="sm" type="text" required
+                        formControlName="description" />
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="code">Code</label>
+                    <input cFormControl id="code" sizing="sm" type="text" required formControlName="code" />
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="amount">Valor total do contrato</label>
+                    <input cFormControl id="amount"  sizing="sm" class="text-left" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" required formControlName="amount" />
+                </c-col>
+                <c-col md="6">
+                    <label cLabel for="installments">Duração <span>(meses)</span></label>
+                    <input cFormControl id="installments" sizing="sm" type="number" required
+                        formControlName="installments" />
+                </c-col>
+                <c-col md="6" >
+                    <c-form-check>
+                        <input cFormCheckInput formControlName="active" id="checkOne" name="active" type="checkbox" />
+                        <label cFormCheckLabel for="checkOne">Ativo</label>
+                      </c-form-check>
+                </c-col>
+                <c-col md="12" class="mt-4 d-flex gap-2">
+                    <button cButton color="primary" sizing="sm" type="submit">Adicionar</button>
+                </c-col>
+            </c-row>
+        </form>
+    </c-card-body>
+</c-card>

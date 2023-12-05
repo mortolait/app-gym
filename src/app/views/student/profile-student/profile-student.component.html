@@ -1,0 +1,228 @@
+<c-toaster [placement]="position" class="p-3" position="fixed">
+  <c-toast (timer)="onTimerChange($event)" (visibleChange)="onVisibleChange($event)" [visible]="visible" [delay]="3000"
+    color="light">
+    <c-toast-header>
+      <svg cIcon name="cilSave" size="xl" title="Paper Plane Icon"></svg>
+    </c-toast-header>
+    <c-toast-body>
+      <h5 class="title-white">{{ msgRes}}</h5>
+      <c-progress thin>
+        <c-progress-bar [value]="percentage"></c-progress-bar>
+      </c-progress>
+    </c-toast-body>
+  </c-toast>
+</c-toaster>
+<c-card>
+  <div class="header-card-profile d-flex flex-column justify-content-between">
+    <div></div>
+    <div class="d-flex justify-content-around align-items-center">
+      <div class="d-flex gap-4 ml-4 img-avatar">
+        <c-avatar src="assets/profile-404.svg" class="avatar-perfil"></c-avatar>
+      </div>
+    </div>
+    <div class="d-flex justify-content-around align-items-center">
+
+      <div class="color-white">
+        <h4>{{formGroup.get('fullName')?.value}}</h4>
+        <!-- se type for igual client exibe o status se nao exibe o btn de conversao -->
+        <p *ngIf="formGroup.get('type')?.value == 'client'">{{ formGroup.get('status')?.value }}</p>
+        <div *ngIf="formGroup.get('type')?.value == 'lead'">
+          <button cButton color="success" variant="ghost" size="sm">Converter</button>
+        </div>
+      </div>
+      <div>
+        <div cButton color="success" id="button-addon1" type="button" toggle="visible" (click)="newSale()"
+          cSidebarToggle="aside-new-student" title="Novo cadastro">
+          <svg cIcon name="cilCart" size="lg" class="color-white"></svg>
+          <span class="color-white ml-2">Nova venda</span>
+        </div>
+      </div>
+      <div></div>
+    </div>
+    <div class="nav_perfil_student">
+      <c-nav variant="underline" class="nav-profile">
+        <c-nav-item>
+          <a [cTabContent]="tabContent1" class="text-light" [routerLink] [tabPaneIdx]="0" cNavLink>
+            <svg cIcon class="me-2" name="cilHome"></svg>
+            Perfil
+          </a>
+        </c-nav-item>
+        <c-nav-item>
+          <a [cTabContent]="tabContent1" class="text-light" id="menu_register" [routerLink] [tabPaneIdx]="1" cNavLink>
+            <svg cIcon class="me-2" name="cilUser"></svg>
+            Cadastro
+          </a>
+        </c-nav-item>
+        <c-nav-item>
+          <a [cTabContent]="tabContent1" class="text-light" [routerLink] [tabPaneIdx]="2" cNavLink>
+            <svg cIcon class="me-2" name="cilCode"></svg>
+            Vendas
+          </a>
+        </c-nav-item>
+        <c-nav-item *ngIf="formGroup.value['type'] == 'client'">
+          <a [cTabContent]="tabContent1" class="text-light" [routerLink] [tabPaneIdx]="3" cNavLink>
+            <svg cIcon class="me-2" name="cilCode"></svg>
+            Contratos
+          </a>
+        </c-nav-item>
+        <c-nav-item>
+          <a [cTabContent]="tabContent1" class="text-light" [routerLink] [tabPaneIdx]="4" cNavLink>
+            <svg cIcon class="me-2" name="cilCode"></svg>
+            Relacionamento
+          </a>
+        </c-nav-item>
+      </c-nav>
+    </div>
+  </div>
+  <c-card-header>
+
+  </c-card-header>
+  <c-card-body>
+    <c-tab-content #tabContent1="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+      <c-tab-pane class="p-3 preview" role="tabpanel">
+        <c-row>
+          <c-col md="5">
+            <!-- informações pessoais, not is form -->
+            <c-card>
+              <c-card-header class="d-flex justify-content-between">
+                <div>
+                  <svg cIcon class="me-2" name="cilUser"></svg>
+                  <span>Informações pessoais</span>
+                </div>
+                <a (click)="goRegister()" class="cursor-pointer"> <svg cIcon class="me-2" name="cilPencil"
+                    size="lg"></svg></a>
+              </c-card-header>
+              <c-card-body>
+                <div class="info-profile">
+                  <div>
+                    <span>Nome</span>
+                    <span>{{formGroup.get('fullName')?.value}}</span>
+                  </div>
+                  <div>
+                    <span>Data de nascimento</span>
+                    <span>{{formGroup.get('dob')?.value}}</span>
+                  </div>
+                  <div>
+                    <span>Sexo</span>
+                    <span>{{formGroup.get('sex')?.value == 'female'? 'Feminino':formGroup.get('sex')?.value=='male'?'Masculino':'Outro'}}</span>
+                  </div>
+                  <div>
+                    <span>Email</span>
+                    <span>{{formGroup.get('email')?.value}}</span>
+                  </div>
+                  <div>
+                    <span>Telefone</span>
+                    <span>{{formGroup.get('phone')?.value}}</span>
+                  </div>
+                  <div>
+                    <span>Objetivos</span>
+                    <span>{{formGroup.get('goals')?.value?formGroup.get('goals')?.value:"-"}}</span>
+                  </div>
+                </div>
+              </c-card-body>
+            </c-card>
+
+          </c-col>
+        </c-row>
+      </c-tab-pane>
+      <c-tab-pane class="p-3 preview" role="tabpanel">
+        <form cForm [formGroup]="formGroup" (ngSubmit)="onSubmit() " #customStylesForm="ngForm"
+          [validated]="customStylesValidated">
+          <c-row>
+            <!-- Informações Pessoais -->
+            <c-col md="4">
+              <label cLabel for="fullName">Nome Completo</label>
+              <input cFormControl id="fullName" type="text" required formControlName="fullName" />
+              <c-form-feedback [valid]="false">Por favor digite o nome .</c-form-feedback>
+            </c-col>
+            <c-col md="2">
+              <label cLabel for="dob">Data de Nascimento</label>
+              <input cFormControl id="dob" type="date" formControlName="dob" />
+            </c-col>
+            <c-col md="2">
+              <label cLabel for="sex">Sexo</label>
+              <select cFormControl id="sex" cSelect formControlName="sex">
+                <option value="male">Masculino</option>
+                <option value="female">Feminino</option>
+                <option value="other">Outro</option>
+              </select>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col md="4">
+              <label cLabel for="email">E-mail</label>
+              <input cFormControl id="email" type="email" formControlName="email" />
+            </c-col>
+
+            <c-col md="4">
+              <label cLabel for="phone">Número de Telefone</label>
+              <input mask="(00) 0 0000-0000" cFormControl id="phone" type="tel" required formControlName="phone" />
+              <c-form-feedback [valid]="false">Por favor digite o nome .</c-form-feedback>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col md="8">
+              <label cLabel for="medicalHistory">Histórico Médico</label>
+              <textarea cFormControl id="medicalHistory" formControlName="medicalHistory"></textarea>
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col md="4">
+              <label cLabel for="emergencyContact">Contato de Emergência</label>
+              <input mask="(00) 0 0000-0000" cFormControl id="emergencyContact" type="tel"
+                formControlName="emergencyContact" />
+            </c-col>
+
+            <c-col md="4">
+              <label cLabel for="medications">Medicações em Uso</label>
+              <input cFormControl id="medications" type="text" formControlName="medications" />
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col md="8">
+              <label cLabel for="exerciseRestrictions">Restrições de Exercício</label>
+              <input cFormControl id="exerciseRestrictions" type="text" formControlName="exerciseRestrictions" />
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col md="4">
+              <label cLabel for="startDate">Data de Início</label>
+              <input cFormControl id="startDate" type="date" formControlName="startDate" />
+            </c-col>
+            <c-col md="4">
+              <label cLabel for="interests">Modalidades de Interesse</label>
+              <input cFormControl id="interests" type="text" placeholder="Musculação, Yoga, etc."
+                formControlName="interests" />
+            </c-col>
+          </c-row>
+          <c-row>
+            <c-col md="4">
+              <label cLabel for="goals">Objetivos na Academia</label>
+              <input cFormControl id="goals" type="text" placeholder="Perda de peso, ganho muscular..."
+                formControlName="goals" />
+            </c-col>
+
+            <c-col md="4">
+              <label cLabel for="referral">Como soube da academia?</label>
+              <input cFormControl id="referral" type="text" formControlName="referral" />
+            </c-col>
+          </c-row>
+          <c-col md="12" class="form-btn">
+            <button cButton color="primary" type="submit">Salvar</button>
+            <button cButton color="primary" variant="outline" (click)="goBack()">Cancelar</button>
+          </c-col>
+        </form>
+      </c-tab-pane>
+      <c-tab-pane class="p-3 preview" role="tabpanel">
+        <app-sales></app-sales>
+      </c-tab-pane>
+      <c-tab-pane class="p-3 preview" role="tabpanel">
+       <app-contracts></app-contracts>
+      </c-tab-pane>
+      <c-tab-pane class="p-3 preview" role="tabpanel">
+        <img [src]="studentService?.qrcode">
+      </c-tab-pane>
+    </c-tab-content>
+
+  </c-card-body>
+</c-card>
