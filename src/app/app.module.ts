@@ -47,13 +47,14 @@ import {
   SidebarModule,
   TabsModule,
   UtilitiesModule,
+  ModalModule 
 } from '@coreui/angular-pro';
 import { SharedModule as Shared } from './shared/shared.module';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { LoginComponent } from './auth/login/login.component';
 
 import { StudentModule } from './views/student/student.module';
-
+import { IntegrationWppComponent } from "../app/containers/integration-wpp/integration-wpp.component"
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -69,7 +70,7 @@ const APP_CONTAINERS = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, LoginComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS, LoginComponent,IntegrationWppComponent],
   imports: [
     HttpClientModule,
     BrowserModule,
@@ -99,7 +100,8 @@ const APP_CONTAINERS = [
     CardModule,
     FormsModule,
     StudentModule,
-    Shared
+    Shared,
+    ModalModule 
   ],
   providers: [
     {

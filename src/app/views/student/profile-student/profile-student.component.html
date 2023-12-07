@@ -25,7 +25,13 @@
       <div class="color-white">
         <h4>{{formGroup.get('fullName')?.value}}</h4>
         <!-- se type for igual client exibe o status se nao exibe o btn de conversao -->
-        <p *ngIf="formGroup.get('type')?.value == 'client'">{{ formGroup.get('status')?.value }}</p>
+        <p *ngIf="formGroup.get('type')?.value == 'client'" [ngClass]="{
+          text_danger: formGroup.get('status')?.value === 'contract_inactive',
+          text_success: formGroup.get('status')?.value === 'contract_active',
+          text_warning: formGroup.get('status')?.value === 'contract_to_expire'
+        }">
+          {{ formGroup.get('status')?.value | statusStudentContract }}
+        </p>
         <div *ngIf="formGroup.get('type')?.value == 'lead'">
           <button cButton color="success" variant="ghost" size="sm">Converter</button>
         </div>
@@ -100,11 +106,12 @@
                   </div>
                   <div>
                     <span>Data de nascimento</span>
-                    <span>{{formGroup.get('dob')?.value}}</span>
+                    <span>{{formGroup.get('dob')?.value | date : 'dd/MM/yyyy'}}</span>
                   </div>
                   <div>
                     <span>Sexo</span>
-                    <span>{{formGroup.get('sex')?.value == 'female'? 'Feminino':formGroup.get('sex')?.value=='male'?'Masculino':'Outro'}}</span>
+                    <span>{{formGroup.get('sex')?.value == 'female'?
+                      'Feminino':formGroup.get('sex')?.value=='male'?'Masculino':'Outro'}}</span>
                   </div>
                   <div>
                     <span>Email</span>
@@ -112,7 +119,7 @@
                   </div>
                   <div>
                     <span>Telefone</span>
-                    <span>{{formGroup.get('phone')?.value}}</span>
+                    <span>{{formGroup.get('phone')?.value | fone}} </span>
                   </div>
                   <div>
                     <span>Objetivos</span>
@@ -217,12 +224,73 @@
         <app-sales></app-sales>
       </c-tab-pane>
       <c-tab-pane class="p-3 preview" role="tabpanel">
-       <app-contracts></app-contracts>
+        <app-contracts></app-contracts>
       </c-tab-pane>
       <c-tab-pane class="p-3 preview" role="tabpanel">
-        <img [src]="studentService?.qrcode">
+        <c-card>
+          <c-nav variant="underline" >
+            <c-nav-item>
+              <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="0" cNavLink>
+                Nova ligação
+              </a>
+            </c-nav-item>
+            <c-nav-item>
+              <a [cTabContent]="tabRelation" id="menu_register" [routerLink] [tabPaneIdx]="1" cNavLink>
+                Nova mensagem Whatsapp
+              </a>
+            </c-nav-item>
+            <c-nav-item>
+              <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="2" cNavLink>
+                Novo email
+              </a>
+            </c-nav-item>
+            <c-nav-item>
+              <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="3" cNavLink>
+                Nova notificação
+              </a>
+            </c-nav-item>
+          </c-nav>
+
+          <c-tab-content #tabRelation="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+            <c-tab-pane class="p-3 preview" role="tabpanel">
+              <a class="linkPainel" >Registre uma ligação</a>
+            </c-tab-pane>
+            <c-tab-pane class="p-3 preview" role="tabpanel">
+              <a class="linkPainel" *ngIf="!formWpp" (click)="formWpp = !formWpp">Envie uma mensagem</a>
+              <form *ngIf="formWpp" cForm #f="ngForm" (ngSubmit)="sendMessageWpp(f)">
+                <textarea
+                  cFormControl 
+                  name="messageWpp"
+                  id="messageWpp"
+                  rows="4"
+                  ngModel
+                  #messageWpp="ngModel"
+                >
+                </textarea>
+                <div class="d-flex gap-2 mt-2 justify-content-end">
+                  <button cButton variant="outline" color="dark" (click)="formWpp = false"> Cancelar</button>
+                  <button cButton color="success" class="text-white" type="submit"> Enviar</button>
+                </div>
+              </form>
+            </c-tab-pane>
+            <c-tab-pane class="p-3 preview" role="tabpanel">
+              <a  class="linkPainel">Envie um Email</a>
+              <div>
+                <textarea cFormControl id="exampleFormControlTextarea1" rows="3"></textarea>
+                <div>
+                  <button cButton variant="outline"> Cancelar</button>
+                  <button cButton color="primary"> Salvar</button>
+                </div>
+              </div>
+            </c-tab-pane>
+            <c-tab-pane class="p-3 preview" role="tabpanel">
+              <a >Escreva uma notificação</a>
+            </c-tab-pane>
+          </c-tab-content>
+        </c-card>
+
+
       </c-tab-pane>
     </c-tab-content>
-
   </c-card-body>
 </c-card>

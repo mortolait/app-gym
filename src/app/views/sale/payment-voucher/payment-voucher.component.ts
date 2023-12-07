@@ -80,10 +80,10 @@ export class PaymentVoucherComponent {
     this.router.navigate([`sale/${this.idParams}`])
   }
   printContract() {
-    console.log("teste")
+    
   }
   toSign() {
-    console.log("teste")
+  
   }
 
   ngOnDestroy() {

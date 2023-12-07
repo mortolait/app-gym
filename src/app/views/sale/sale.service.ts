@@ -73,7 +73,6 @@ export class SaleService {
     return this.http.get(`${environment.URL_API}product/${value}`)
       .pipe(
         tap(response => {
-          console.log({ response })
           this.productSearched = response as Product[]
         })
       )
@@ -106,7 +105,6 @@ export class SaleService {
     return this.http.post(`${environment.URL_API}sale`, this.sale)
       .pipe(
         tap((response: any) => {
-          console.log({ response })
           this.salesReceipt = {
             client: this.selectedStudentSale.full_name,
             codeSale: response.code,

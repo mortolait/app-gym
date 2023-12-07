@@ -51,20 +51,18 @@ export class StudentService {
           (response)=>{
             const { sales } = response as any
             this.contractsOfStudent = this.buildArrayContractsBySale(sales)
-            console.log(this.contractsOfStudent)
           }
         )
       )
   }
   showProfileSale(item: any) {
-    console.log(item)
     this.profileSale = item
     this.profileSaleModal = !this.profileSaleModal
     this.itemsOfSale = this.concatenateItems(this.profileSale)
     this.paymentsOfSale = this.concatenaPaymentForm(this.profileSale)
   }
   concatenaPaymentForm(data:any){
-    console.log(data)
+ 
     let concatenatedItems: any = [];
     if(data.payments.length > 0){
       data.payments.forEach((p:any)=>{
@@ -124,9 +122,7 @@ export class StudentService {
   }
 
   getQrcode() {
-    console.log("teste")
     const url = `http://localhost:21465/api/NERDWHATS_AMERICA/start-session`;
-
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $2b$10$hRSS2JHMPV0mQfQF1v5W_u9Uuk10xrs7hMzGqSoxQCfLVsK_CJ4Ea'
@@ -147,11 +143,9 @@ export class StudentService {
 
 
   buildArrayContractsBySale(sales: any){
-    console.log({r: sales })
     let contractsByStudent:any = []
     if(sales.length > 0){
       sales.forEach((sale: any)=>{
-        console.log({sale})
         if(sale.contracts.length > 0){
           sale.contracts.forEach((c:any)=>{
             contractsByStudent.push({

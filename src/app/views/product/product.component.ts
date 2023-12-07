@@ -26,7 +26,6 @@ export class ProductComponent {
   getProduct() {
     this.productService.getAll().subscribe({
       next: (response: any) => {
-        console.log({ response })
         this.productService.products = response.products
         this.productService.selectedProduct = this.productService.products[0]
       }

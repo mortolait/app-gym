@@ -13,7 +13,7 @@ import { debounce, debounceTime, filter, switchMap } from 'rxjs';
 })
 export class ModalComponent {
   valueSearched = new FormControl()
-
+  isInputFocused:Boolean = false
   constructor(public saleService:SaleService, private router: Router){}
 
   studentSearchead$ = this.valueSearched.valueChanges
@@ -30,4 +30,9 @@ export class ModalComponent {
 
   }
 
+  InputFocused(){
+    setTimeout(()=>{
+      this.isInputFocused = !this.isInputFocused
+    },1000)
+  }
 }

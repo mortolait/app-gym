@@ -11,13 +11,13 @@
                             </a>
                         </c-nav-item>
                         <c-nav-item>
-                            <a [cTabContent]="tabContent1" id="menu_register" [routerLink] [tabPaneIdx]="1" cNavLink>
+                            <a [cTabContent]="tabContent1" id="menu_register" [routerLink] [tabPaneIdx]="selectedStudent?.type =='client'?1:0"  cNavLink>
                                 <svg cIcon class="me-2"></svg>
                                 Produtos
                             </a>
                         </c-nav-item>
                         <c-nav-item>
-                            <a [cTabContent]="tabContent1" [routerLink] [tabPaneIdx]="2" cNavLink>
+                            <a [cTabContent]="tabContent1" [routerLink] [tabPaneIdx]="selectedStudent?.type =='client'?2:1"   cNavLink>
                                 <svg cIcon class="me-2"></svg>
                                 Serviços
                             </a>
@@ -26,7 +26,7 @@
                 </c-card-header>
                 <c-card-body>
                     <c-tab-content #tabContent1="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
-                        <c-tab-pane class="p-3 preview" role="tabpanel">
+                        <c-tab-pane *ngIf="this.selectedStudent?.type =='client'" class="p-3 preview" role="tabpanel">
                             <c-row>
                                 <form cForm [formGroup]="formContract" (ngSubmit)="addContract()">
                                     <c-row>
@@ -207,7 +207,7 @@
         <c-col sm="4">
             <c-card class="mt-2">
                 <c-card-header>
-                    <h5 class="fw-bold">Itens a venda</h5>
+                    <h5 class="fw-bold">Itens da venda</h5>
                 </c-card-header>
                 <c-card-body>
                     <div *ngFor="let item of saleService.sale.itens">

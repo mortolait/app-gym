@@ -76,3 +76,20 @@ ul li a:hover{
   transform: rotate(360deg);
   transition: 1s;
 }
+
+
+.text_danger{
+  color: #dc3545;
+}
+.text_success{
+  color: #28a745;
+}
+.text_warning{
+  color: #ffc107;
+}
+.linkPainel{
+  text-decoration: underline;
+}
+.linkPainel:hover{
+  cursor: pointer;
+}

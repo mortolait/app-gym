@@ -102,12 +102,11 @@ export class NewSaleComponent {
       }
     })
     this.saleService.sale.idClient = this.idParams
-    console.log(this.saleService.sale.idClient)
   }
   getContracts() {
     this.contractService.getAll().subscribe({
       next: res => {
-        console.log({ contracts: this.contractService.contracts })
+        
       }
     })
 
@@ -135,7 +134,6 @@ export class NewSaleComponent {
 
     this.saleService.getValueContractById(contract).subscribe({
       next: ((response: any) => {
-        console.log({ r: response })
         this.saleService.sale.itens.push({
           idEntity: contract,
           nameEntity: response['description'],
@@ -145,10 +143,9 @@ export class NewSaleComponent {
           obs,
           value: response['amount'] as any,
           quantity: 1,
-          start_date: startDate,
+          start_date: moment(startDate).toDate(),
           end_date: moment(startDate).add(response.installments, "months").toDate()
         })
-        console.log(this.saleService.sale.itens)
         this.calcValueSale()
         this.formContract.reset({ discounts: 'none', type: 'contract', valueDiscounts: 0,startDate:moment(new Date()).format('YYYY-MM-DD') })
       })
@@ -168,7 +165,6 @@ export class NewSaleComponent {
       value: this.selectedProduct.selling_price * qtd,
       quantity: qtd
     })
-    console.log({ sale: this.saleService.sale.itens })
     this.calcValueSale()
     this.formProduct.reset({ qtd: 1, type: 'product', valueDiscounts: 0, discounts: "none" })
   }

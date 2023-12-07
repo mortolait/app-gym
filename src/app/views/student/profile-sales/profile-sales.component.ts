@@ -50,7 +50,7 @@ export class ProfileSalesComponent {
   constructor(public studentService:StudentService){}
   
   ngOnInit(){
-    console.log({testes: this.studentService.profileSale})
+   
   }
   // ngOnDestroy(){
   //   console.log("teste")

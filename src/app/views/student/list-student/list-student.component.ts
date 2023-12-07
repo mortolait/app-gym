@@ -63,7 +63,7 @@ export class ListStudentComponent implements OnInit {
   details_visible = Object.create({});
 
   showInfo(event: any){
-    console.log(event.item.id);
+    
     this.details_visible[event.item.id] = !this.details_visible[event.item.id];
   }
   toggleDetails(item: any) {
@@ -95,7 +95,7 @@ export class ListStudentComponent implements OnInit {
   }
 
   deleteStudent(entity:string,id:string){
-    console.log(entity,id);
+    
     this.service.deleteStudent(id).subscribe(
       (res:any) => {
         this.toggleToast();
@@ -113,7 +113,7 @@ export class ListStudentComponent implements OnInit {
   }
 
   perfilStudent(id:string){
-    console.log({ id })
+    
     this.router.navigate(['/student',id])
   }
   toggleToast() {

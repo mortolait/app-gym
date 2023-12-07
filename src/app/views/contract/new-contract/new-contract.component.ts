@@ -25,11 +25,9 @@ export class NewContractComponent {
   }
 
   register(){
-    console.log(this.formGroup.value)
     this.contractService.registerContract(this.formGroup.value).subscribe(
       {
         next: (res)=>{
-          console.log({ res })
           this.contractService.contracts.push(res)
           this.contractService.visible = true
           setTimeout(()=>{

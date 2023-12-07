@@ -15,54 +15,52 @@ import {
 export class StudentComponent {
   formGroup!: FormGroup;
   customStylesValidated = false;
-  constructor(private formBuilder: FormBuilder,private studentService: StudentService) {}
+  constructor(private formBuilder: FormBuilder, private studentService: StudentService) { }
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-       // Informações Pessoais
-    fullName: ['', [Validators.required, Validators.minLength(3)]],
-    dob: [''],
-    sex: ['', [Validators.required]],
+      // Informações Pessoais
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      dob: [''],
+      sex: ['', [Validators.required]],
 
-    // Contato
-    address: [''],
-    phone: ['', [Validators.required]],
-    email: [''],
-    emergencyContact: ['', ],
+      // Contato
+      address: [''],
+      phone: ['', [Validators.required]],
+      email: [''],
+      emergencyContact: ['',],
 
-    // Saúde
-    medicalHistory: [''],
-    medications: [''],
-    exerciseRestrictions: [''],
+      // Saúde
+      medicalHistory: [''],
+      medications: [''],
+      exerciseRestrictions: [''],
 
-    // Detalhes de Associação
-    startDate: ['', [Validators.required]],
-    plan: ['', [Validators.required]],
-    interests: [''],
+      // Detalhes de Associação
+      startDate: ['', [Validators.required]],
+      plan: ['', [Validators.required]],
+      interests: [''],
 
-    // Dados Financeiros
-    paymentMethod: ['', [Validators.required]],
-    expirationDate: ['', [Validators.required]],
-    // Outras Informações
-    goals: [''],
-    referral: ['']
+      // Dados Financeiros
+      paymentMethod: ['', [Validators.required]],
+      expirationDate: ['', [Validators.required]],
+      // Outras Informações
+      goals: [''],
+      referral: ['']
     });
   }
 
-  onSubmit(){
+  onSubmit() {
     this.customStylesValidated = true;
-    console.log(this.formGroup)
-    if(this.formGroup.valid){
-      console.log(this.formGroup.value);
+    if (this.formGroup.valid) {
       this.studentService.registerStudent(this.formGroup.value).subscribe(
         (res) => {
-          console.log(res);
+
         }
       );
     }
-    else{
+    else {
       console.log("Formulário inválido");
     }
   }
-  
+
 }

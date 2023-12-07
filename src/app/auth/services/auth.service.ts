@@ -23,7 +23,6 @@ export class AuthService {
     return this.http.post<LoginResponse>(`${environment.URL_API}sessions`, credentions)
       .pipe(
         tap(response => {
-          console.log({ response })
           localStorage.setItem("token", response["token"]);
         })
       )

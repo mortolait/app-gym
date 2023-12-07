@@ -10,3 +10,42 @@
     outline: none;
     border: none;
 }
+.container_list{
+    display: flex;
+    flex-direction: column;
+    .list_student{
+        z-index: 1000;
+        background-color: #eee;
+        P{
+            margin: 0px;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+    }
+   
+}
+.card_list{
+    width: 400px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+    div{
+        margin: 0px;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        span{
+            font-size: 12px;
+            color: #ccc;
+            margin-left: 1rem;
+        }
+    }
+    div:hover{
+        background-color: #eee;
+        cursor: pointer;
+    }
+}
+

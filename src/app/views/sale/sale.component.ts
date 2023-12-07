@@ -86,7 +86,7 @@ export class SaleComponent {
   getContracts() {
     this.contractService.getAll().subscribe({
       next: res => {
-        console.log({ contracts: this.contractService.contracts })
+      
       }
     })
 

@@ -20,7 +20,6 @@ export class ContractComponent {
     this.contractService.getAll().subscribe({
       next: (response:any) =>{
         this.contractService.contracts = response.contracts
-        console.log(this.contractService.contracts)
       },
       error:(error)=>{
         console.error(error)
@@ -29,7 +28,6 @@ export class ContractComponent {
   }
   goPerfil(id: string){
     this.contractService.contract = this.contractService.contracts.find((x:Contract)=> x.id == id)
-    console.log(this.contractService.contract)
     this.router.navigate(['contracts'])
   }
   goNewContract(){

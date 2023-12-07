@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="profile_sale">
                                         <a (click)="studentService.showProfileSale(item)"  >
-                                            <img src="../../../../assets/eye-svgrepo-com.svg"  [@formButton]="teste?'valid':invalid" width="24"  height="24" />
+                                            <img src="../../../../assets/eye-svgrepo-com.svg"   width="24"  height="24" />
                                         </a>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                 </c-badge>
                             </ng-container>
                             <ng-container *ngSwitchCase="'create_at'">
-                                {{(item[columnName]) | date}}
+                                {{(item[columnName]) | date : 'dd/MM/yyyy'}}
                             </ng-container>
                             <ng-container *ngSwitchCase="'valueDiscount'">
                                 {{(item[columnName]) | currency:'BRL'}}

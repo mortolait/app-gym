@@ -35,7 +35,6 @@ export class ReceiptPaymentComponent {
     this.saleService.processSale[0].actived = false
     this.saleService.processSale[1].actived = true
 
-    console.log({ sale: this.saleService.sale })
   }
   backSale() {
     this.saleService.sale.received = []
@@ -52,7 +51,6 @@ export class ReceiptPaymentComponent {
     this.router.navigate([`sale/${this.idParams}`])
   }
   removePayment(item: any) {
-    console.log(item)
     this.saleService.sale.received.splice(this.saleService.sale.received.indexOf(item), 1)
     this.calcTotalReceived()
 
@@ -112,12 +110,12 @@ export class ReceiptPaymentComponent {
     this.saleService.sale.hasOutstandingBalance = true
     this.saleService.sale.valueOutstandingBalance = (this.saleService.sale.amount - this.saleService.sale.totalDiscount) - this.saleService.sale.totalReceived
     this.saleService.sale.datePaymentOutstandingBalance = this.date
-    console.log(this.saleService.sale)
+    
     this.saleService.postSale().subscribe({
       next: response => {
         if (response == null) {
           alert('Algo deu errado')
-          console.log(this.saleService.sale)
+          
           return
         }
         this.router.navigate([`sale/payment-voucher/${this.idParams}`])

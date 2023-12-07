@@ -4,6 +4,7 @@
 
 export const environment = {
   URL_WPP:"http://localhost:21465/api",
+  API_WPP_SECRET:'THISISMYSECURETOKEN',
   URL_API: "http://localhost:3000/",
   production: false
 };

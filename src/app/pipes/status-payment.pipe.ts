@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StatusPaymentPipe implements PipeTransform {
 
   transform(value: string): string {
-    console.log(value)
     if (value == 'PAID') {
       return 'Pago'
     }

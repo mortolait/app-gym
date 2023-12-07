@@ -1,9 +1,10 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { StudentService } from '../student.service';
 import * as moment from 'moment';
 import { Sale } from '../../sale/sale';
+import { ServiceShared } from 'src/app/shared/service.service';
 
 @Component({
   selector: 'app-profile-student',
@@ -13,16 +14,19 @@ import { Sale } from '../../sale/sale';
 export class ProfileStudentComponent {
   formGroup!: FormGroup;
   customStylesValidated = false;
+  tabRelation: any; 
   sales!: Sale[]
   position = 'top-end';
   visible = false;
   percentage = 0;
+  formWpp: boolean = false;
   msgRes = '';
   constructor(
     private formBuilder: FormBuilder,
     public studentService: StudentService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private sharedService: ServiceShared
   ) {}
 
   idStudent!: string;
@@ -30,6 +34,7 @@ export class ProfileStudentComponent {
   ngOnInit(): void {
 
     this.studentService.getQrcode().subscribe()
+
     this.studentService.profileSaleModal = false
     this.formGroup = this.formBuilder.group({
       fullName: ['', [Validators.required, Validators.minLength(3)]],
@@ -63,7 +68,7 @@ export class ProfileStudentComponent {
         student.dob = moment.utc(new Date(student.date_of_birth)).format('YYYY-MM-DD')
         student.expirationDate = student.expiration_date
         student.type = student.type
-        student.status = this.capitalizeFirstLetter(student.status)
+        student.status = student.statusContract
         this.formGroup.patchValue(student);
       },
       error: (err)=>{
@@ -77,7 +82,6 @@ export class ProfileStudentComponent {
     this.router.navigate([`sale/${this.idStudent}`])
   }
   onSubmit() {
-    console.log(this.formGroup.value);
     this.studentService.updateStudent(this.idStudent, this.formGroup.value).subscribe({
       next: (res) => {
         this.msgRes = 'Aluno atualizado com sucesso!';
@@ -111,7 +115,6 @@ export class ProfileStudentComponent {
     history.back();
   }
   goRegister(){
-    console.log('goRegister');
     document.getElementById('menu_register')?.click();
   }
   capitalizeFirstLetter(str: string) {
@@ -124,5 +127,17 @@ export class ProfileStudentComponent {
         this.studentService.salesById = sales
       }
     })
+  }
+  sendMessageWpp(f: NgForm){
+    console.log(this.formGroup.get('phone')?.value);
+    this.sharedService.sendMessageWpp({
+      message: f.control.get('messageWpp')?.value,
+      phone: `55${this.formGroup.get('phone')?.value}`,
+      isGroup: false
+    }).subscribe({
+      next: response =>{
+        console.log({ response })
+      }
+    });
   }
 }

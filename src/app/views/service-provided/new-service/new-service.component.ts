@@ -26,10 +26,8 @@ export class NewServiceComponent {
   }
 
   register(){
-    console.log(this.formGroup.value)
     this.serviceProvided.create(this.formGroup.value).subscribe({
       next: (response) => {
-        console.log(response)
         this.serviceProvided.visible = true
         setTimeout(()=>{
           this.serviceProvided.visible = false

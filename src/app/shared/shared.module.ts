@@ -37,13 +37,15 @@ import { ModalComponent } from "../views/sale/modal/modal.component"
 import { FormPaymentPipe } from "../pipes/form-payment.pipe"
 import { StatusContractPipe } from "../pipes/status-contract.pipe"
 import { StatusStudentContractPipe } from '../pipes/status-student-contract.pipe';
+import { FonePipe } from '../pipes/fone.pipe';
 
 @NgModule({
   declarations: [
     ModalComponent,
     FormPaymentPipe,
     StatusContractPipe,
-    StatusStudentContractPipe
+    StatusStudentContractPipe,
+    FonePipe
   ],
   imports: [
     CommonModule,
@@ -109,7 +111,8 @@ import { StatusStudentContractPipe } from '../pipes/status-student-contract.pipe
   FormsModule,
   FormPaymentPipe,
   StatusContractPipe,
-  StatusStudentContractPipe
+  StatusStudentContractPipe,
+  FonePipe
   ]
 })
 export class SharedModule { }
