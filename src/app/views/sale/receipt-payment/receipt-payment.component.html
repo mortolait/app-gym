@@ -3,7 +3,7 @@
 <c-modal [visible]="visible" backdrop="static" id="staticBackdropModal" size="sm">
     <c-modal-header>
         <h5 cModalTitle>Saldo devedor</h5>
-        <button cButtonClose></button>
+        <button cButtonClose (click)="closeModal()"></button>
     </c-modal-header>
     <c-modal-body>
         <c-row>
@@ -34,12 +34,12 @@
                                 Pix
                             </a>
                         </c-nav-item>
-                        <!-- <c-nav-item>
+                        <c-nav-item>
                             <a [cTabContent]="tabContent1" [routerLink] [tabPaneIdx]="2" cNavLink>
                                 <svg cIcon class="me-2"></svg>
                                 Cartão
                             </a>
-                        </c-nav-item> -->
+                        </c-nav-item>
                     </c-nav>
                 </c-card-header>
                 <c-card-body>
@@ -54,7 +54,9 @@
                                                 <input cFormControl sizing="sm" id="paymentPaper" currencyMask
                                                     [(ngModel)]="valueMoney" name="paymentPaper" #paymentPaper="ngModel"
                                                     ngModel class="text-left"
-                                                    [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+                                                    [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" 
+                                                    (blur)="defocusFieldValue()"
+                                                    />
                                             </c-col>
                                         </c-row>
                                     </c-card-body>
@@ -109,7 +111,35 @@
                         <c-tab-pane class="p-3 preview" role="tabpanel">
                             <c-row>
                                 <form cForm>
-                                    <h1>Cartão</h1>
+                                    <form cForm #fc="ngForm" (ngSubmit)="addPaymentCardMoney(fc)">
+                                        <c-card>
+                                            <c-card-body>
+                                                <c-row>
+                                                    <c-col sm="6">
+                                                        <label cLabel for="paymentCard">Valor</label>
+                                                        <input cFormControl sizing="sm" id="paymentCard" currencyMask
+                                                            [(ngModel)]="valueMoney" name="paymentCard" #paymentCard="ngModel"
+                                                            ngModel class="text-left"
+                                                            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+                                                    </c-col>
+                                                </c-row>
+                                            </c-card-body>
+                                            <c-card-footer>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex gap-2">
+                                                        <button cButton size="sm" (click)="backSale()" variant="outline"
+                                                            shape="rounded-pill">Escolher
+                                                            mais Itens</button>
+                                                        <button cButton size="sm" variant="outline" (click)="cancelSale()"
+                                                            shape="rounded-pill">Cancelar
+                                                            venda</button>
+                                                    </div>
+                                                    <button cButton size="sm" type="submit"
+                                                        shape="rounded-pill">Adicionar</button>
+                                                </div>
+                                            </c-card-footer>
+                                        </c-card>
+                                    </form>
                                 </form>
                             </c-row>
                         </c-tab-pane>

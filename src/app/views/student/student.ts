@@ -11,5 +11,6 @@ export interface Student {
   interests: string;
   goals: string;
   referral: string;
+  type?:  string
 }
 

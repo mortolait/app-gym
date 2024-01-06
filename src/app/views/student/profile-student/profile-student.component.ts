@@ -5,35 +5,102 @@ import { StudentService } from '../student.service';
 import * as moment from 'moment';
 import { Sale } from '../../sale/sale';
 import { ServiceShared } from 'src/app/shared/service.service';
+import { filterTrigger, formButtonTrigger } from 'src/app/animations';
 
 @Component({
   selector: 'app-profile-student',
   templateUrl: './profile-student.component.html',
   styleUrls: ['./profile-student.component.scss'],
+  animations: [formButtonTrigger, filterTrigger]
 })
 export class ProfileStudentComponent {
   formGroup!: FormGroup;
   customStylesValidated = false;
-  tabRelation: any; 
+  tabRelation: any;
   sales!: Sale[]
   position = 'top-end';
   visible = false;
   percentage = 0;
   formWpp: boolean = false;
   msgRes = '';
+  contactsByClient = [];
+  contactsByClientWpp = [];
+  contactsByClientCall = [];
+  contactsByClientEmail = [];
+  formCall: Boolean = false;
+  convertLead: Boolean = false;
+  columns = [
+    {
+      key: 'full_name',
+      _style: { width: '30%' },
+      _props: { class: 'fw-bold' },
+      label: 'Nome Completo'
+    },
+    {
+      key: 'email',
+      _style: { width: '30%' },
+      _props: { class: 'fw-bold' },
+      label: 'Email'
+    },
+    {
+      key: 'phone',
+      _style: { width: '20%' },
+      _props: { class: 'fw-bold' },
+      label: 'Telefone'
+    },
+
+    {
+      key: 'statusContract',
+      _style: { width: '10%' },
+      _props: { class: 'fw-bold' },
+      label: 'Status'
+    },
+    {
+      key: 'show',
+      label: '',
+      _style: { width: '5%' },
+      filter: false,
+      sorter: false,
+    },
+  ];
+  columnsContacts = [
+    {
+      key: 'createAt',
+      _style: { width: '30%' },
+      _props: { class: 'fw-bold' },
+      label: 'Data'
+    },
+    {
+      key: 'type',
+      _style: { width: '30%' },
+      _props: { class: 'fw-bold' },
+      label: 'Tipo'
+    },
+    {
+      key: 'subject',
+      _style: { width: '30%' },
+      _props: { class: 'fw-bold' },
+      label: 'Assunto'
+    },
+    {
+      key: 'content',
+      _style: { width: '30%' },
+      _props: { class: 'fw-bold' },
+      label: 'Conteudo'
+    },
+  ]
   constructor(
     private formBuilder: FormBuilder,
     public studentService: StudentService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private sharedService: ServiceShared
-  ) {}
+    private sharedService: ServiceShared,
+
+  ) { }
 
   idStudent!: string;
 
   ngOnInit(): void {
-
-    this.studentService.getQrcode().subscribe()
 
     this.studentService.profileSaleModal = false
     this.formGroup = this.formBuilder.group({
@@ -51,8 +118,8 @@ export class ProfileStudentComponent {
       interests: [''],
       goals: [''],
       referral: [''],
-      type:[''],
-      status:[''],
+      type: [''],
+      status: [''],
     });
 
     this.idStudent = this.activatedRoute.snapshot.params?.['id'];
@@ -71,14 +138,15 @@ export class ProfileStudentComponent {
         student.status = student.statusContract
         this.formGroup.patchValue(student);
       },
-      error: (err)=>{
+      error: (err) => {
         console.log('Error', err);
       }
     });
     this.getSales()
+    this.getContacts(this.idStudent)
 
   }
-  newSale(){
+  newSale() {
     this.router.navigate([`sale/${this.idStudent}`])
   }
   onSubmit() {
@@ -88,9 +156,9 @@ export class ProfileStudentComponent {
         this.toggleToast();
       },
       error: (err) => {
-        if(err.status === 409){
+        if (err.status === 409) {
           this.msgRes = 'Email já cadastrado!';
-        }else{
+        } else {
           this.msgRes = 'Erro ao atualizar aluno';
         }
         this.toggleToast();
@@ -114,30 +182,88 @@ export class ProfileStudentComponent {
   goBack() {
     history.back();
   }
-  goRegister(){
+  goRegister() {
     document.getElementById('menu_register')?.click();
   }
   capitalizeFirstLetter(str: string) {
     return str[0].toUpperCase() + str.slice(1);
   }
-  getSales(){
+  getSales() {
     this.studentService.getSalesById(this.idStudent).subscribe({
-      next: (response:any) =>{
+      next: (response: any) => {
         const { sales } = response
         this.studentService.salesById = sales
       }
     })
   }
-  sendMessageWpp(f: NgForm){
-    console.log(this.formGroup.get('phone')?.value);
+  sendMessageWpp(f: NgForm) {
     this.sharedService.sendMessageWpp({
       message: f.control.get('messageWpp')?.value,
       phone: `55${this.formGroup.get('phone')?.value}`,
       isGroup: false
     }).subscribe({
-      next: response =>{
+      next: response => {
         console.log({ response })
+        this.studentService.registerNewContact({
+          id_student: this.idStudent,
+          content: f.control.get('messageWpp')?.value,
+          type: 'whatsapp'
+        }).subscribe({
+          next: (response: any) => {
+            this.getContacts(this.idStudent)
+            this.sharedService.alertVisible = true
+            this.sharedService.alertMessage = 'Mensagem enviada!'
+            setTimeout(()=>{
+          this.sharedService.alertVisible = false
+          f.control.get('messageWpp')?.setValue('');
+         },3000)
+          }
+        })
+      },
+      error: err => {
+        console.log({ err })
+        if (err.error.status == "Disconnected") {
+          this.sharedService.text = 'Dispositivo não está conectado !<br /> Sincronize seu <span class="spanIntegration">Whatsapp</span>'
+          this.sharedService.visible = false
+          setTimeout(() => {
+            this.sharedService.visible = true
+          })
+        }
       }
     });
   }
-}
+  registerCall(f: NgForm) {
+    this.studentService.registerNewContact({
+      id_student: this.idStudent,
+      subject: f.control.get('subject')?.value,
+      content: f.control.get('messageCall')?.value,
+      type: 'call'
+    }).subscribe({
+      next: (response: any) => {
+        console.log({ response })
+        this.getContacts(this.idStudent)
+        this.sharedService.alertVisible = true
+        this.sharedService.alertMessage = 'Ligação registrada!'
+         setTimeout(()=>{
+          this.sharedService.alertVisible = false
+          f.control.get('subject')?.setValue('');
+          f.control.get('messageCall')?.setValue('');
+         },3000)
+      }
+    })
+  }
+  getContacts(id: string) {
+    this.studentService.getContactsById(id).subscribe({
+      next: (response: any) => {
+        console.log({ response })
+        this.contactsByClient = response.contacts
+        this.contactsByClientWpp = response.contacts.filter((x: any) => x.type == 'whatsapp')
+        this.contactsByClientCall = response.contacts.filter((x: any) => x.type == 'call')
+        this.contactsByClientEmail = response.contacts.filter((x: any) => x.type == 'email')
+      }
+    })
+  }
+  convert(){
+    this.convertLead = !this.convertLead
+  }
+} 

@@ -21,6 +21,9 @@ export class StudentService {
   paymentsOfSale: any = []
   contractsOfStudent: any = []
   qrcode!: string
+  idSaleToPay!: String
+  valueSaleToPay!: number
+
   constructor(private http: HttpClient) { }
 
   registerStudent(student: Student) {
@@ -120,7 +123,6 @@ export class StudentService {
 
     return concatenatedItems;
   }
-
   getQrcode() {
     const url = `http://localhost:21465/api/NERDWHATS_AMERICA/start-session`;
     const headers = new HttpHeaders({
@@ -140,12 +142,11 @@ export class StudentService {
         }),
       );
   }
-
-
   buildArrayContractsBySale(sales: any){
     let contractsByStudent:any = []
     if(sales.length > 0){
       sales.forEach((sale: any)=>{
+        console.log({ sale })
         if(sale.contracts.length > 0){
           sale.contracts.forEach((c:any)=>{
             contractsByStudent.push({
@@ -160,5 +161,14 @@ export class StudentService {
       })
     }
     return contractsByStudent
+  }
+  registerNewContact(data:any){
+    return this.http.post(`${environment.URL_API}student/new-contact`,data)
+  }
+  getContactsById(id: string){
+    return this.http.get(`${environment.URL_API}student/contacts/${id}`)
+  }
+  paySale(paymentForm: string){
+    return this.http.put(`${environment.URL_API}sale/${this.idSaleToPay}`,{value: this.valueSaleToPay, paymentForm })
   }
 }

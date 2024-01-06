@@ -28,24 +28,30 @@ import {
   NavModule,
   TabsModule,
   ModalModule,
-  
+  SpinnerModule 
 } from '@coreui/angular-pro';
 
 import { IconModule } from '@coreui/icons-angular';
 
 import { ModalComponent } from "../views/sale/modal/modal.component"
 import { FormPaymentPipe } from "../pipes/form-payment.pipe"
+import { TypeTransactionPipe } from "../pipes/type-transaction.pipe"
 import { StatusContractPipe } from "../pipes/status-contract.pipe"
 import { StatusStudentContractPipe } from '../pipes/status-student-contract.pipe';
 import { FonePipe } from '../pipes/fone.pipe';
+import { PaymentCardComponent } from './components/payment-card/payment-card.component';
+import { ModalOpenCashRegisterComponent } from './components/modal-open-cash-register/modal-open-cash-register.component';
 
 @NgModule({
   declarations: [
     ModalComponent,
     FormPaymentPipe,
+    TypeTransactionPipe,
     StatusContractPipe,
     StatusStudentContractPipe,
-    FonePipe
+    FonePipe,
+    PaymentCardComponent,
+    ModalOpenCashRegisterComponent
   ],
   imports: [
     CommonModule,
@@ -77,7 +83,7 @@ import { FonePipe } from '../pipes/fone.pipe';
     NgxCurrencyModule,
     ModalModule,
     FormsModule,
-   
+    SpinnerModule
   ],
   exports:[
   ButtonGroupModule,
@@ -112,7 +118,11 @@ import { FonePipe } from '../pipes/fone.pipe';
   FormPaymentPipe,
   StatusContractPipe,
   StatusStudentContractPipe,
-  FonePipe
+  FonePipe,
+  SpinnerModule,
+  PaymentCardComponent,
+  ModalOpenCashRegisterComponent,
+  TypeTransactionPipe,
   ]
 })
 export class SharedModule { }

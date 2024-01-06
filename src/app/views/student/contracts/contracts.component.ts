@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { StudentService } from '../student.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-contracts',
@@ -7,8 +8,8 @@ import { StudentService } from '../student.service';
   styleUrls: ['./contracts.component.scss']
 })
 export class ContractsComponent {
-  constructor(public studentService:StudentService){}
-
+  constructor(public studentService:StudentService, private activatedRoute:ActivatedRoute){}
+  idStudent!:string
   columns=[
     {
       label:'Descrição',
@@ -37,6 +38,10 @@ export class ContractsComponent {
     },
   ]
 
+  ngOnInit(){
+    this.idStudent = this.activatedRoute.snapshot.params?.['id'];
+    this.studentService.getSalesById(this.idStudent).subscribe()
+  }
   toggleDetails($event:any){
 
   }

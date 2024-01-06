@@ -60,6 +60,10 @@ const routes: Routes = [
         path: 'sale',
         loadChildren: () => import('./views/sale/sale.module').then((m) => m.SaleModule)
       },
+      {
+        path: 'cash-register',
+        loadChildren: () => import('./views/cash-register/cash-register.module').then((m) => m.CashRegisterModule)
+      },
       
     ]
   },

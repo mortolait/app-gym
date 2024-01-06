@@ -3,6 +3,7 @@ import { SaleService } from '../sale.service';
 import { StudentService } from '../../student/student.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { ServiceShared } from 'src/app/shared/service.service';
 
 @Component({
   selector: 'app-receipt-payment',
@@ -16,7 +17,7 @@ export class ReceiptPaymentComponent {
   public visible: Boolean = false
   public date: Date = new Date()
 
-  constructor(private router: Router, public saleService: SaleService, public studentService: StudentService, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private sharedService: ServiceShared, public saleService: SaleService, public studentService: StudentService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.idParams = this.activatedRoute.snapshot.params?.['id'];
@@ -88,6 +89,19 @@ export class ReceiptPaymentComponent {
     }
     this.calcTotalReceived()
   }
+  addPaymentCardMoney(f:NgForm){
+    console.log({ f: f.value })
+    const index = this.saleService.sale.received.findIndex(item => item.type === "card_Money");
+    if (index >= 0) {
+      this.saleService.sale.received[index].value = f.value.card_Money;
+    } else {
+      this.saleService.sale.received.push({
+        type: "card_Money",
+        value: f.value.paymentCard
+      });
+    }
+    this.calcTotalReceived()
+  }
   closeModal() {
     this.visible = false
   }
@@ -103,6 +117,13 @@ export class ReceiptPaymentComponent {
           return
         }
         this.router.navigate([`sale/payment-voucher/${this.idParams}`])
+      },
+      error: e => {
+        
+        if(e.status == 400 && e.error == 'No open cash register for the day'){
+          this.visible = false
+          this.sharedService.modalCashVisible = true
+        }
       }
     })
   }
@@ -113,14 +134,30 @@ export class ReceiptPaymentComponent {
     
     this.saleService.postSale().subscribe({
       next: response => {
+        console.log({ response })
         if (response == null) {
           alert('Algo deu errado')
-          
           return
         }
         this.router.navigate([`sale/payment-voucher/${this.idParams}`])
+      },
+      error: err => {
+        if(err.error == "No open cash register for the day"){
+          this.visible = false
+          this.sharedService.modalCashVisible = true
+        }
       }
    })
   }
 
+  defocusFieldValue(){
+    console.log(this.valueMoney)
+   const totalToPay =  (this.saleService.sale.amount - this.saleService.sale.totalDiscount) -
+    this.saleService.sale.totalReceived > 0?(this.saleService.sale.amount -
+    this.saleService.sale.totalDiscount) - this.saleService.sale.totalReceived:0
+
+    if(this.valueMoney > totalToPay){
+      this.valueMoney = totalToPay
+    }
+  }
 }

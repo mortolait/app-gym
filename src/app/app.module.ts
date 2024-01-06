@@ -54,7 +54,8 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { LoginComponent } from './auth/login/login.component';
 
 import { StudentModule } from './views/student/student.module';
-import { IntegrationWppComponent } from "../app/containers/integration-wpp/integration-wpp.component"
+import { IntegrationWppComponent } from "../app/containers/integration-wpp/integration-wpp.component";
+
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {

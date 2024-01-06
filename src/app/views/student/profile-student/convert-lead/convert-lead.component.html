@@ -1,0 +1,20 @@
+<c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="changeVisible($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Converter</h5>
+      <button (click)="closeModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <span *ngIf="!isClient">
+            Confirma a conversão ?
+        </span>
+        <span *ngIf="isClient">
+            Feito!
+        </span>
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="closeModal()" cButton color="secondary">
+        Cancelar
+      </button>
+      <button cButton color="primary" (click)="convertToLead()">Salvar</button>
+    </c-modal-footer>
+</c-modal>

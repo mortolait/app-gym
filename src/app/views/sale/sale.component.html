@@ -5,7 +5,6 @@
             <div class="d-flex align-items-center gap-2">
                 <svg cIcon name="cilCheckAlt" width="30" height="30"></svg>
                 <div class="alert-text">
-                    <!-- <p>Sucesso</p> -->
                     <span>Venda finalizada</span>
                 </div>
             </div>
@@ -19,8 +18,7 @@
         </div>
         <div class="d-flex justify-content-center">
             <div class="container-process"  *ngFor="let item of saleService.processSale">
-                <span class="number" [@formButton] = "item.actived?'valid':'invalid'" [ngClass]="{activedProcess: item.actived}">{{ item.num }}</span>
-                <!-- <span class='process-text'>{{item.name}}</span> -->
+                <span class="number" [ngClass]="{activedProcess: item.actived}">{{ item.num }}</span>
                 <span>{{item.name}}</span>
             </div>
         </div>

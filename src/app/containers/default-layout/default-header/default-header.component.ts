@@ -34,7 +34,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
     themeSwitchRadio: new UntypedFormControl('light'),
   });
 
-  constructor(private sharedService: ServiceShared, private classToggler: ClassToggleService,private serviceHeader: ServiceService, private router: Router,private saleService:SaleService) {
+  constructor(public serviceShared: ServiceShared, private classToggler: ClassToggleService,private serviceHeader: ServiceService, private router: Router,private saleService:SaleService) {
     super();
   }
 
@@ -96,14 +96,10 @@ export class DefaultHeaderComponent extends HeaderComponent {
     this.router.navigate([`/student/${id}`])
   }
   showModalWhats(){
-    // this.sharedService.verifySession().subscribe({
-    //   next: (response:any)=>{
-    //     this.serviceHeader.visible = 
-    //   }
-    // })
-    this.serviceHeader.visible = false
+    this.serviceShared.text = ''
+    this.serviceShared.visible = false
     setTimeout(()=>{
-      this.serviceHeader.visible = true
+      this.serviceShared.visible = true
     },100)
   }
 }

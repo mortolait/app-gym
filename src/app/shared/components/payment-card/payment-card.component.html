@@ -1,0 +1,10 @@
+<c-card >
+    <div class="card_data" [ngStyle]="customStyleCard">
+        <svg cIcon [name]="icon" width="30" height="30" [ngStyle]="firstSpanStyle" title="Paper Plane Icon"></svg>
+        <div>
+            <span [ngStyle]="firstSpanStyle">{{form}}</span>
+            <span [ngStyle]="firstSpanStyle">{{value
+                | currency:'BRL'}}</span>
+        </div>
+    </div>
+</c-card>

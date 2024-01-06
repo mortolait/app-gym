@@ -5,6 +5,7 @@ import { Student } from '../student/student';
 import { Sale, SalesReceipt } from "./sale"
 import { debounceTime, filter, tap } from 'rxjs';
 import { Product } from '../product/product';
+import { Console } from 'console';
 @Injectable({
   providedIn: 'root'
 })
@@ -105,6 +106,7 @@ export class SaleService {
     return this.http.post(`${environment.URL_API}sale`, this.sale)
       .pipe(
         tap((response: any) => {
+          console.log({ re: response })
           this.salesReceipt = {
             client: this.selectedStudentSale.full_name,
             codeSale: response.code,

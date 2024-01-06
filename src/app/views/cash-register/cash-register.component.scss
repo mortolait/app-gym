@@ -1,0 +1,89 @@
+.header_cash {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 40px;
+
+    span {
+        font-size: 2rem;
+    }
+}
+
+.content_card {
+    margin-bottom: 1rem;
+
+    .body {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+
+        .info {
+            p {
+                margin: 0px;
+                color: rgba(0, 0, 0, .6);
+                font-weight: bold;
+
+                span {
+                    color: #ccc;
+                    font-weight: initial;
+                }
+            }
+        }
+    }
+
+}
+
+.optionsCashRegister {
+    position: absolute;
+    top: 70px;
+    z-index: 100;
+}
+
+.actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    button {
+        color: #fff;
+    }
+}
+
+.popover-body {
+    a {
+        text-decoration: none;
+        font-size: 1rem;
+        color: #222;
+
+
+    }
+
+    a:hover {
+        cursor: pointer;
+        color: var(--cui-primary);
+    }
+}
+
+.footer_modal {
+    button {
+        color: #fff;
+    }
+}
+
+.card_cash_register {
+    text-decoration: none;
+
+    .content_card {
+        :hover {
+            cursor: pointer;
+            background-color: #eee;
+            transition: 1s;
+        }
+    }
+}
+
+.btn_close_cash:hover {
+    color: #222 !important;
+}

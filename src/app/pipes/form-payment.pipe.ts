@@ -11,6 +11,8 @@ export class FormPaymentPipe implements PipeTransform {
     }
     else if (form == 'pix_Money'){
       return 'Pix'
+    }else if(form == 'card_Money'){
+      return 'Cartão'
     }
     return '';
   }

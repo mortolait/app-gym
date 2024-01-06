@@ -43,11 +43,13 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { SalesComponent } from './sales/sales.component';
 import { ProfileSalesComponent } from './profile-sales/profile-sales.component';
 import { ContractsComponent } from './contracts/contracts.component';
+import { ConvertLeadComponent } from './profile-student/convert-lead/convert-lead.component';
+import { ConfirmPaymentComponent } from './sales/confirm-payment/confirm-payment.component';
 
 
 
 @NgModule({
-  declarations: [ StudentComponent,NewStudentComponent,ListStudentComponent,ProfileStudentComponent, SalesComponent,StatusPaymentPipe, ProfileSalesComponent, ContractsComponent],
+  declarations: [ StudentComponent,NewStudentComponent,ListStudentComponent,ProfileStudentComponent, SalesComponent,StatusPaymentPipe, ProfileSalesComponent, ContractsComponent, ConvertLeadComponent, ConfirmPaymentComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,

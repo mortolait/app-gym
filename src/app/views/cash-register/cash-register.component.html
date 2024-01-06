@@ -1,0 +1,258 @@
+<c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+    <c-modal-header>
+        <h5 cModalTitle>Fechar caixa</h5>
+        <button (click)="closeCashRegisterModal($event)" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <p *ngIf="!isCashRegisterClose">Você confirma o fechamento desse caixa ?</p>
+        <p *ngIf="isCashRegisterClose">Caixa fechado !</p>
+    </c-modal-body>
+    <c-modal-footer class="footer_modal">
+        <button (click)="closeCashRegisterModal($event)" cButton color="secondary">
+            Cancelar
+        </button>
+        <button cButton (click)="closeCashRegister()" color="success">Fechar caixa</button>
+    </c-modal-footer>
+</c-modal>
+<c-modal id="liveDemoModal" [visible]="visibleOptions" (visibleChange)="handleModalTransaction($event)">
+    <c-modal-header>
+        <h5 cModalTitle>Caixa - Retirada</h5>
+        <button (click)="closeModalTransactions()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <form cForm class="form_cash" #f="ngForm" (ngSubmit)="registerTransaction(f)">
+            <div *ngIf="!isCreatedTransaction">
+                <div>
+                    <div class="mb-3">
+                        <label cLabel for="exampleFormControlInput1">Descrição</label>
+                        <input cFormControl name="description" #description="ngModel" ngModel required />
+                    </div>
+                    <div class="mb-3">
+                        <label cLabel for="exampleFormControlInput1">Valor</label>
+                        <input 
+                            cFormControl 
+                            type="text" 
+                            placeholder="R$" 
+                            currencyMask
+                            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" 
+                            (input)="handleValue($event)" 
+                            class="text-left" 
+                            name="value"
+                            #value="ngModel" 
+                            required 
+                            ngModel 
+                        />
+                            <span *ngIf="value.touched && isBalanceGreaterThanWithdrawalAmount" class="text-warning">Saldo indisponivel</span>
+                            <span *ngIf="isValueIqualsZero" class="text-warning">Valor de retirada deve ser maior que 0</span>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button (click)="closeModalTransactions()" cButton color="secondary">
+                        Cancelar
+                    </button>
+                    <button cButton type="submit" color="success">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="isCreatedTransaction">
+                <p>Feito !</p>
+            </div>
+        </form>
+    </c-modal-body>
+</c-modal>
+<c-container>
+    <c-row>
+        <div class="header_cash">
+            <span>Caixa</span>
+            <button cButton (click)="openModalCash()">Abrir caixa</button>
+        </div>
+        <hr>
+        <c-card class="p-2">
+            <c-row>
+                <c-col lg="4">
+                    <c-date-picker
+                     #datePicker="cDatePicker" 
+                     [(ngModel)]="dataFilter"
+                     placeholder="Data de abertura" 
+                     size="sm"
+                     (dateChange)="getInfoCashDate($event)"
+                     >
+                    </c-date-picker>
+                </c-col>
+                <c-col lg="2">
+                    <select aria-label="Caixa" [(ngModel)]="typeCash" (change)="getInfoCash()" cSelect
+                        style="height: 32px; padding:0px 10px;">
+                        <option value="all">Todos</option>
+                        <option value="open">Aberto</option>
+                        <option value="close">Fechado</option>
+                    </select>
+                </c-col>
+            </c-row>
+            <c-row class="mt-5">
+                <c-col sm="2">
+                    <app-payment-card [value]="serviceCash?.cashRegisters.cashRegisterInformations.totValueMoney" form="Dinheiro" [icon]="iconCard"
+                        [customStyleCard]="{'background-color': '#eee'}" [firstSpanStyle]="{'color': '#000'}">
+                        >
+                    </app-payment-card>
+                </c-col>
+                <c-col sm="2">
+                    <app-payment-card [value]="serviceCash?.cashRegisters.cashRegisterInformations.totValueCard" form="Cartão" [icon]="iconCard"
+                        [customStyleCard]="{'background-color': '#eee'}" [firstSpanStyle]="{'color': '#000'}">
+                        >
+                    </app-payment-card>
+                </c-col>
+                <c-col sm="2">
+                    <app-payment-card [value]="serviceCash?.cashRegisters.cashRegisterInformations.totValuePix" form="Pix" [icon]="iconCard"
+                        [customStyleCard]="{'background-color': '#eee'}" [firstSpanStyle]="{'color': '#000'}">
+
+                        >
+                    </app-payment-card>
+                </c-col>
+                <c-col sm="2">
+                    <app-payment-card [value]="serviceCash?.cashRegisters.cashRegisterInformations.totSalesValue" form="Total de vendas" [icon]="iconCard"
+                        [customStyleCard]="{'background-color': '#D6EBFF'}"
+                        [firstSpanStyle]="{'color': 'var(--cui-info)'}">
+                        >
+                    </app-payment-card>
+                </c-col>
+                <c-col sm="2">
+                    <app-payment-card [value]="serviceCash?.cashRegisters.cashRegisterInformations.totReceived" form="T. Recebimentos" [icon]="iconCard"
+                        [customStyleCard]="{'background-color': '#D5F1DE'}"
+                        [firstSpanStyle]="{'color': 'var(--cui-success)'}">
+                        >
+                    </app-payment-card>
+                </c-col>
+                <c-col sm="2">
+                    <app-payment-card [value]="serviceCash?.cashRegisters.cashRegisterInformations.totValueWithdrawals * -1" form="Total de saídas"
+                        [icon]="iconCard" [customStyleCard]="{'background-color': '#FADDDD'}"
+                        [firstSpanStyle]="{'color': 'var(--cui-danger)'}">
+                        >
+                    </app-payment-card>
+                </c-col>
+            </c-row>
+        </c-card>
+        <!-- <c-card class="rounded-0 mt-4">
+            <c-card-body class="min_perfil"> -->
+
+        <div class="mt-4">
+            <a class="card_cash_register"  *ngFor="let cash of serviceCash?.cashRegisters.cashRegisterInformations.cashRegisters">
+                <c-card class="content_card " (click)="showInfo(cash)" >
+                    <c-card-body class="body">
+                        <div class="info">
+                            <p>{{ cash.user.name }}</p>
+                            <p>Abertura <span>{{ cash.open_date | date:'dd/MM/YYYY'}}</span></p>
+                            <p>valor inicial <span>{{cash.initial_balance | currency: 'BRL'}}</span></p>
+                        </div>
+                        <div class="info">
+                            <p>Total de recebimento: <span>{{ cash.total_income | currency: 'BRL' }}</span></p>
+                            <p>Valor de saída: <span>{{ cash.total_expense | currency: 'BRL'}}</span></p>
+                        </div>
+                        <div class="info">
+                            <p>Valor final: <span>{{ cash.final_balance | currency: 'BRL' }}</span></p>
+                        </div>
+                        <div class="d-flex" *ngIf="cash.status == 'open'">
+                            <button size="sm" cButton color="primary" class="btn_close_cash"
+                                (click)="closeCashRegisterButton($event,cash)">Fechar caixa</button>
+                            <button [cPopover]="popoverHtml" (click)="openListMenuCashRegister($event)"
+                                color="secondary" variant="ghost" cPopoverPlacement="bottom"
+                                [cPopoverTrigger]="'click'" cButton class="m-1" size="sm">
+                                <svg cIcon name="cilOptions" size="sm"></svg>
+                                <ng-template #popoverHtml>
+                                    <div class="popover-body">
+                                        <a (click)="showModalOptions()">Caixa - Retirada</a>
+                                    </div>
+                                </ng-template>
+                            </button>
+                        </div>
+                        <div *ngIf="cash.status == 'close'">
+                            <span class="fw-bold">Caixa fechado</span>
+                        </div>
+                    </c-card-body>
+                </c-card>
+                <div [visible]="details_visible[cash.id]" cCollapse>
+                    <c-card class="mt-3 mb-3 shadow">
+                        <c-card-body>
+                            <c-smart-table #smartTable="cSmartTable" [columns]="columnsTransactionRegister"
+                                [items]="cash.cashRegisterTransactions" header clickableRows pagination
+                                [tableHeadProps]="{color: 'warning'}" (rowClick)="showInfo($event)">
+                                <ng-template cTemplateId="tableDetails" let-item="item">
+                                    <div [visible]="this.details_visible[item.id] === true" cCollapse>
+                                        <c-card class="rounded-0">
+                                            <c-card-body class="min_perfil">
+                                                <div>
+                                                    <c-card class="content_card"
+                                                        *ngFor="let registered of item.cashRegisterTransactions">
+                                                        <c-card-body class="body">
+                                                            <div class="info">
+                                                                <p>{{registered?.name}}</p>
+                                                                <p>Abertura <span> {{registered.date_at |
+                                                                        date:'dd/MM/YYYY'}}</span>
+                                                                </p>
+                                                                <p>Forma de pagamento
+                                                                    <span>{{registered.paymentForm}}</span></p>
+                                                            </div>
+                                                            <div class="info">
+                                                                <p>Tipo: <span>{{registered.type}}</span></p>
+                                                            </div>
+                                                            <div class="info">
+                                                                <p>Valor: <span>{{registered.value | currency:'BRL'}}</span>
+                                                                </p>
+                                                            </div>
+                                                        </c-card-body>
+                                                    </c-card>
+                                                </div>
+                                            </c-card-body>
+                                        </c-card>
+                                    </div>
+                                </ng-template>
+                                <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                                    let-tdContent="tdContent">
+                                    <td>
+                                        <ng-container [ngSwitch]="columnName">
+                                            <ng-container *ngSwitchCase="'date_at'">
+                                                {{ item[columnName] | date : 'dd/MM/yyyy | h:mm a'}}
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'value'">
+                                                {{ item[columnName] | currency:'BRL' }}
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'paymentForm'">
+                                                {{ item[columnName] | formPayment }}
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'type'">
+                                                {{ item[columnName] | typeTransaction }}
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="'action'">
+                                                <div class="d-flex" *ngIf="item.status == 'open'">
+                                                    <button size="sm" cButton color="primary" variant="ghost"
+                                                        (click)="closeCashRegisterButton($event,cash)">Fechar caixa</button>
+                                                    <button [cPopover]="popoverHtml"
+                                                        (click)="openListMenuCashRegister($event)" color="secondary"
+                                                        variant="ghost" cPopoverPlacement="bottom"
+                                                        [cPopoverTrigger]="'click'" cButton class="m-1" size="sm">
+                                                        <svg cIcon name="cilOptions" size="sm"></svg>
+                                                        <ng-template #popoverHtml>
+                                                            <div class="popover-body">
+                                                                <a (click)="showModalOptions()">Caixa - Retirada</a>
+                                                            </div>
+                                                        </ng-template>
+                                                    </button>
+                                                </div>
+                                                <div *ngIf="item.status == 'close'">
+                                                    <span>Caixa fechado</span>
+                                                </div>
+                                            </ng-container>
+                                            <ng-container *ngSwitchDefault>
+                                                {{ tdContent }}
+                                            </ng-container>
+                                        </ng-container>
+                                    </td>
+                                </ng-template>
+                            </c-smart-table>
+                        </c-card-body>
+                    </c-card>
+                </div>
+            </a>
+        </div>
+    </c-row>
+</c-container>

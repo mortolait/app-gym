@@ -1,5 +1,5 @@
 <app-profile-sales></app-profile-sales>
-
+<app-confirm-payment [visible]="modalVisible"></app-confirm-payment>
 <c-container>
     <c-row>
         <c-col sm="12">
@@ -10,7 +10,7 @@
     </c-row>
     <c-row>
         <c-col sm="12">
-            <c-smart-table #smartTable="cSmartTable" clickableRows [columns]="columns" header pagination
+            <c-smart-table #smartTable="cSmartTable" clickableRows noItemsLabel='Não há vendas' [columns]="columns" header pagination
                 [items]="studentService.salesById" pagination (rowClick)="toggleDetails($event)"
                 [sorterValue]="{ column: 'name', state: 'asc' }" [tableBodyProps]="{align: 'middle'}"
                 [tableHeadProps]="{color: 'warning'}">
@@ -42,8 +42,8 @@
                                         </div>
                                     </div>
                                     <div class="profile_sale">
-                                        <a (click)="studentService.showProfileSale(item)"  >
-                                            <img src="../../../../assets/eye-svgrepo-com.svg"   width="24"  height="24" />
+                                        <a (click)="studentService.showProfileSale(item)">
+                                            <img src="../../../../assets/eye-svgrepo-com.svg" width="24" height="24" />
                                         </a>
                                     </div>
                                 </div>
@@ -70,18 +70,23 @@
                                 {{(item[columnName]) | currency:'BRL'}}
                             </ng-container>
                             <ng-container *ngSwitchCase="'total_amount'">
-                                {{(item[columnName]) - item['total_received'] | currency:'BRL'}}
+                                {{(item[columnName]) | currency:'BRL'}}
                             </ng-container>
                             <ng-container *ngSwitchCase="'total_received'">
                                 {{(item[columnName]) | currency:'BRL'}}
                             </ng-container>
+                            <ng-container *ngSwitchCase="'outstandingBalance'">
+                                {{(item[columnName]) | currency:'BRL'}}
+                            </ng-container>
                             <ng-container *ngSwitchCase="'show'">
-                                <button cButton color="primary" variant="outline" size="sm">ver</button>
+                                <div class="d-flex gap-2">
+                                    <button cButton color="primary" (click)="payAmountDue($event, item)" variant="outline" size="sm" *ngIf="(item.total_amount - item.total_received) > 0">Pagar</button>
+                                    <button cButton color="primary" variant="outline" size="sm">ver</button>
+                                </div>
                             </ng-container>
                             <ng-container *ngSwitchDefault>
                                 {{tdContent}}
                             </ng-container>
-
                         </ng-container>
                     </td>
                 </ng-template>

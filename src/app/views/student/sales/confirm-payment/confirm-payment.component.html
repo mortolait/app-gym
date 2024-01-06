@@ -1,0 +1,28 @@
+<c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="changeVisible($event)">
+    <c-modal-header>
+        <h5 cModalTitle> <span>
+            Confirmar pagamento ?
+        </span></h5>
+        <button (click)="closeModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+       
+        <div *ngIf="!isPaymentSend">
+            <label cLabel for="paymentForm">Forma de pagamento</label>
+            <select cFormControl id="paymentForm" cSelect [(ngModel)]="paymentForm">
+                <option selected value="paper_Money">Dinheiro</option>
+                <option value="pix_Money">Pix</option>
+                <option value="card_Money">Cartão</option>
+            </select>
+        </div>
+        <span *ngIf="isPaymentSend">
+            Feito!
+        </span>
+        <div class="mt-4 d-flex justify-content-end gap-2">
+            <button (click)="closeModal()" cButton color="secondary">
+                Cancelar
+            </button>
+            <button cButton color="primary" (click)="paymentSale()">Salvar</button>
+        </div>
+    </c-modal-body>
+</c-modal>

@@ -20,6 +20,7 @@ export interface Item {
     end_date?: Date | string
 }
 export interface Sale {
+    id?: string
     idClient: string
     code: string
     itens: Item[]
@@ -30,6 +31,10 @@ export interface Sale {
     hasOutstandingBalance: boolean
     valueOutstandingBalance: number
     datePaymentOutstandingBalance: Date
+    statusPayment?: string
+    total_received?: number
+    total_amount?: number
+
 }
 
 export interface SalesReceipt {

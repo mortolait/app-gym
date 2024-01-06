@@ -1,61 +1,71 @@
-.form-btn{
+.form-btn {
   margin-top: 1.5rem;
   display: flex;
   gap: 5px !important;
 }
-.header-card-profile{
+
+.header-card-profile {
   height: 150px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url('../../../../assets/images/crossfit-1126999_1920.jpg');
   background-position: center;
   object-fit: cover;
   background-size: cover;
 }
-.color-white{
+
+.color-white {
   color: white;
 }
-.ml-4{
+
+.ml-4 {
   margin-left: 2rem;
 }
-.ml-2{
+
+.ml-2 {
   margin-left: 0.5rem;
 }
-.img-avatar{
+
+.img-avatar {
   position: absolute;
   top: 40px;
   left: 0px;
 
 }
-.nav_perfil_student{
+
+.nav_perfil_student {
   display: flex;
   justify-content: start;
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
 }
-ul{
+
+ul {
   padding: 0.5rem;
   margin-bottom: 0px;
   margin-left: 10px;
 }
-ul li{
+
+ul li {
   list-style: none;
 }
-ul li a{
+
+ul li a {
   text-decoration: none;
   color: #fff;
   margin-bottom: 0px;
 }
-.nav-profile{
+
+.nav-profile {
   margin-left: 6rem;
 }
 
-ul li a:hover{
+ul li a:hover {
   color: #fff;
   text-decoration: underline;
   margin-bottom: 0px;
   transition: 1s;
 }
 
-.info-profile{
-  div{
+.info-profile {
+  div {
     display: flex;
     justify-content: space-between;
     padding: 5px;
@@ -64,32 +74,53 @@ ul li a:hover{
     border-radius: 4px;
   }
 
-  div :first-child{
+  div :first-child {
     font-weight: bold;
   }
 }
-.cursor-pointer{
+
+.cursor-pointer {
   cursor: pointer;
 }
+
 //girar a caneta no hover
-.cursor-pointer:hover{
+.cursor-pointer:hover {
   transform: rotate(360deg);
   transition: 1s;
 }
 
 
-.text_danger{
+.text_danger {
   color: #dc3545;
 }
-.text_success{
+
+.text_success {
   color: #28a745;
 }
-.text_warning{
+
+.text_warning {
   color: #ffc107;
 }
-.linkPainel{
+
+.linkPainel {
   text-decoration: underline;
 }
-.linkPainel:hover{
+
+.linkPainel:hover {
   cursor: pointer;
+}
+
+.tabDateRelation {
+  c-nav-item{
+    .active{
+      color: #28a745 !important;
+      background: transparent !important;
+      border-color: #28a745 !important;
+    }
+    a:hover{
+      color: #28a745 !important;
+      background: transparent !important;
+      border-color: #28a745 !important;
+    }
+  }
 }

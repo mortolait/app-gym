@@ -1,0 +1,15 @@
+.card_data{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+    div{
+        display: flex;
+        flex-direction: column;
+        line-height: 20px;
+        span:nth-child(2){
+            font-size: 1.5rem;
+        }
+    }
+}

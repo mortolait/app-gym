@@ -33,7 +33,18 @@ export const navItems: INavData[] = [
     //   text: 'NEW'
     // }
   },
- 
+  {
+    name: 'Financeiro',
+    url: '/finacial',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Caixa',
+        url: '/cash-register'
+      }
+    ]
+
+  },
   {
     name: 'Gerencia',
     url: '/manager',
@@ -73,7 +84,4 @@ export const navItems: INavData[] = [
       }
     ]
   },
-
-
-  
 ];

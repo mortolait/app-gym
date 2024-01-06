@@ -1,3 +1,5 @@
+@import "./variables";
+
 .margin-r{
     margin-right: 4rem !important;
 }
@@ -51,4 +53,7 @@ input[type="text"][class="form-control"][placeholder="Pesquisar por nome, email 
     h2{
         margin-bottom: 2rem;
     }
+}
+.spanIntegration{
+    color: #28a745;
 }

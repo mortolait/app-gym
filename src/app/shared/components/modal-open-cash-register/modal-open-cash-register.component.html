@@ -1,0 +1,36 @@
+<c-modal id="liveDemoModal" [visible]="serviceShared.modalCashVisible" (visibleChange)="handleChangeVisible($event)">
+  <c-modal-header>
+    <h5 cModalTitle>Abrir caixa</h5>
+    <button (click)="cancel()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <div *ngIf="!isFormSended">
+      <strong>Abra o caixa para realizar suas vendas</strong>
+    <form cForm class="form_cash" #f="ngForm" (ngSubmit)="openCashRegister(f)">
+      <div class="mb-3">
+        <label cLabel for="exampleFormControlInput1">Valor</label>
+        <input
+          cFormControl 
+          type="text" 
+          placeholder="R$" 
+          currencyMask
+          [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+          class="text-left"
+          name="value"
+          #value = "ngModel"
+          ngModel
+        />
+      </div>
+      <div class="d-flex gap-2 footer_modal">
+        <button cButton color="secondary" (click)="cancel()">
+          Cancelar
+        </button>
+        <button cButton color="success" type="submit">Confirmar</button>
+      </div>
+    </form>
+    </div>
+    <div *ngIf="isFormSended" class="d-flex justify-content-center">
+      <p>{{messageResponse}}</p>
+    </div>
+  </c-modal-body>
+</c-modal>

@@ -5,9 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ServiceService {
-    visible:boolean = false
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
    
 }

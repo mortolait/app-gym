@@ -12,6 +12,9 @@
     </c-toast-body>
   </c-toast>
 </c-toaster>
+
+<app-convert-lead [visible]="convertLead"></app-convert-lead>
+
 <c-card>
   <div class="header-card-profile d-flex flex-column justify-content-between">
     <div></div>
@@ -33,7 +36,7 @@
           {{ formGroup.get('status')?.value | statusStudentContract }}
         </p>
         <div *ngIf="formGroup.get('type')?.value == 'lead'">
-          <button cButton color="success" variant="ghost" size="sm">Converter</button>
+          <button cButton color="success" variant="ghost" size="sm" (click)="convert()">Converter</button>
         </div>
       </div>
       <div>
@@ -228,7 +231,7 @@
       </c-tab-pane>
       <c-tab-pane class="p-3 preview" role="tabpanel">
         <c-card>
-          <c-nav variant="underline" >
+          <c-nav variant="underline">
             <c-nav-item>
               <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="0" cNavLink>
                 Nova ligação
@@ -240,12 +243,12 @@
               </a>
             </c-nav-item>
             <c-nav-item>
-              <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="2" cNavLink>
+              <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="2" cNavLink disabled>
                 Novo email
               </a>
             </c-nav-item>
             <c-nav-item>
-              <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="3" cNavLink>
+              <a [cTabContent]="tabRelation" [routerLink] [tabPaneIdx]="3" cNavLink disabled>
                 Nova notificação
               </a>
             </c-nav-item>
@@ -253,28 +256,44 @@
 
           <c-tab-content #tabRelation="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
             <c-tab-pane class="p-3 preview" role="tabpanel">
-              <a class="linkPainel" >Registre uma ligação</a>
+              <a class="linkPainel" *ngIf="!formCall" (click)="formCall = !formCall">Registre uma ligação</a>
+              <form *ngIf="formCall" cForm #f="ngForm" (ngSubmit)="registerCall(f)">
+                <c-row>
+                  <c-col sm="4" class="mb-2">
+                    <label cLabel for="subject">Assunto</label>
+                    <input cFormControl name="subject" id="subject" rows="4" ngModel #messageWpp="ngModel"
+                      placeholder="Digite o assunto" />
+                  </c-col>
+                  <c-col sm="12">
+                    <textarea cFormControl name="messageCall" id="messageCall" rows="4" ngModel #messageWpp="ngModel"
+                      placeholder="Digite sua mensagem">
+                    </textarea>
+                    <div class="d-flex gap-2 mt-2 justify-content-end">
+                      <button cButton variant="outline" color="dark" (click)="formCall = false"> Cancelar</button>
+                      <button cButton color="success" class="text-white" type="submit"
+                        [@formButton]="f.control.get('messageCall')?.value.length > 0?'valid':'invalid'"
+                        [disabled]="f.control.get('messageCall')?.value.length == 0"> Enviar</button>
+                    </div>
+                  </c-col>
+                </c-row>
+              </form>
             </c-tab-pane>
             <c-tab-pane class="p-3 preview" role="tabpanel">
               <a class="linkPainel" *ngIf="!formWpp" (click)="formWpp = !formWpp">Envie uma mensagem</a>
               <form *ngIf="formWpp" cForm #f="ngForm" (ngSubmit)="sendMessageWpp(f)">
-                <textarea
-                  cFormControl 
-                  name="messageWpp"
-                  id="messageWpp"
-                  rows="4"
-                  ngModel
-                  #messageWpp="ngModel"
-                >
+                <textarea cFormControl name="messageWpp" id="messageWpp" rows="4" ngModel #messageWpp="ngModel"
+                  placeholder="Digite sua mensagem">
                 </textarea>
                 <div class="d-flex gap-2 mt-2 justify-content-end">
                   <button cButton variant="outline" color="dark" (click)="formWpp = false"> Cancelar</button>
-                  <button cButton color="success" class="text-white" type="submit"> Enviar</button>
+                  <button cButton color="success" class="text-white" type="submit"
+                    [@formButton]="f.control.get('messageWpp')?.value.length > 0?'valid':'invalid'"
+                    [disabled]="f.control.get('messageWpp')?.value.length == 0"> Enviar</button>
                 </div>
               </form>
             </c-tab-pane>
             <c-tab-pane class="p-3 preview" role="tabpanel">
-              <a  class="linkPainel">Envie um Email</a>
+              <a class="linkPainel">Envie um Email</a>
               <div>
                 <textarea cFormControl id="exampleFormControlTextarea1" rows="3"></textarea>
                 <div>
@@ -284,13 +303,116 @@
               </div>
             </c-tab-pane>
             <c-tab-pane class="p-3 preview" role="tabpanel">
-              <a >Escreva uma notificação</a>
+              <a>Escreva uma notificação</a>
             </c-tab-pane>
           </c-tab-content>
         </c-card>
+        <c-card class="mt-4">
+          <c-card>
+            <c-nav variant="underline" class="tabDateRelation" color="success">
+              <c-nav-item>
+                <a [cTabContent]="tabDateRelation" [routerLink] [tabPaneIdx]="0" cNavLink>
+                  Todos
+                </a>
+              </c-nav-item>
+              <c-nav-item>
+                <a [cTabContent]="tabDateRelation" id="menu_register" [routerLink] [tabPaneIdx]="1" cNavLink>
+                  Ligações
+                </a>
+              </c-nav-item>
 
+              <c-nav-item>
+                <a [cTabContent]="tabDateRelation" [routerLink] [tabPaneIdx]="3" cNavLink>
+                  Whatsapp
+                </a>
+              </c-nav-item>
+              
+              <c-nav-item>
+                <a [cTabContent]="tabDateRelation" [routerLink] [tabPaneIdx]="2" cNavLink disabled>
+                  Email
+                </a>
+              </c-nav-item>
+              
+            </c-nav>
 
+            <c-tab-content #tabDateRelation="cTabContent" [activeTabPaneIdx]="0" cRounded="bottom">
+              <c-tab-pane class="p-3 preview" role="tabpanel">
+                <c-smart-table [items]="contactsByClient" [columns]="columnsContacts" header
+                  [tableProps]="{ hover: true, striped: true, responsive: true }">
+                  <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                      <ng-container [ngSwitch]="columnName">
+                        <ng-container *ngSwitchCase="'createAt'">
+                          {{ item[columnName] | date : 'dd/MM/yyyy' }}
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          {{ tdContent }}
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                  </ng-template>
+                </c-smart-table>
+              </c-tab-pane>
+              <c-tab-pane class="p-3 preview" role="tabpanel">
+                <c-smart-table [items]="contactsByClientCall" [columns]="columnsContacts" header
+                  [tableProps]="{ hover: true, striped: true, responsive: true }">
+                  <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                      <ng-container [ngSwitch]="columnName">
+                        <ng-container *ngSwitchCase="'createAt'">
+                          {{ item[columnName] | date : 'dd/MM/yyyy' }}
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          {{ tdContent }}
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                  </ng-template>
+                </c-smart-table>
+              </c-tab-pane>
+              <c-tab-pane class="p-3 preview" role="tabpanel">
+                <c-smart-table [items]="contactsByClientEmail" [columns]="columnsContacts" header
+                  [tableProps]="{ hover: true, striped: true, responsive: true }">
+                  <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                      <ng-container [ngSwitch]="columnName">
+                        <ng-container *ngSwitchCase="'createAt'">
+                          {{ item[columnName] | date : 'dd/MM/yyyy' }}
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          {{ tdContent }}
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                  </ng-template>
+                </c-smart-table>
+              </c-tab-pane>
+              <c-tab-pane class="p-3 preview" role="tabpanel">
+                <c-smart-table [items]="contactsByClientWpp" [columns]="columnsContacts" header
+                  [tableProps]="{ hover: true, striped: true, responsive: true }">
+                  <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                      <ng-container [ngSwitch]="columnName">
+                        <ng-container *ngSwitchCase="'createAt'">
+                          {{ item[columnName] | date : 'dd/MM/yyyy' }}
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          {{ tdContent }}
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                  </ng-template>
+                </c-smart-table>
+              </c-tab-pane>
+            </c-tab-content>
+          </c-card>
+        </c-card>
       </c-tab-pane>
+
     </c-tab-content>
   </c-card-body>
 </c-card>

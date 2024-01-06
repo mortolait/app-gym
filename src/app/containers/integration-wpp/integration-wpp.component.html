@@ -1,4 +1,4 @@
-<c-modal id="liveDemoModal" [visible]="service.visible" (visibleChange)="handleLiveDemoChange($event)">
+<c-modal id="liveDemoModal" [visible]="sharedService.visible" (visibleChange)="handleLiveDemoChange($event)">
     <c-modal-header>
         <h5 cModalTitle>Integre seu whatsapp</h5>
         <button (click)="closeModal()" cButtonClose></button>
@@ -6,20 +6,32 @@
     <c-modal-body>
         <div class="container_integration" *ngIf="!isConnected else conected">
             <div class="not_conected">
-                <p>Leia o qr code com o app do Whatsapp</p>
-                <img [src]="qrcodeWpp" alt="">
+                <p [innerHtml]="sharedService.text"></p>
+                <div *ngIf="loadingQr" class="spinner">
+                    <c-spinner color="primary"></c-spinner>
+                </div>
+                <div *ngIf="qrcodeWpp.length > 0">
+                    <img [src]="qrcodeWpp" alt="QR Code" (load)="onImageLoad()">
+                </div>
             </div>
            
         </div>
         <ng-template #conected>
             <div class="conected">
-                <h5 class="text-success">Conectado</h5>
-                <img src="../../../assets/undraw_completed_m9ci.svg" alt="">
+                <h5 *ngIf="!loadingLogout" class="text-success">Conectado</h5>
+                <h5 *ngIf="loadingLogout" class="text-success">Desconectando ...</h5>
+                <img *ngIf="!loadingLogout" src="../../../assets/undraw_completed_m9ci.svg" alt="">
+                <div *ngIf="loadingLogout" class="spinner">
+                    <c-spinner color="primary"></c-spinner>
+                </div>
             </div>
         </ng-template>
     </c-modal-body>
     <c-modal-footer>
-        <button [disabled]="isConnected" cButton color="primary" (click)="getQrcode()">
+        <button *ngIf="isConnected" cButton color="primary" variant='outline' (click)="disconnectWpp()">
+            Desconectar 
+        </button>
+        <button *ngIf="!isConnected" cButton color="primary" (click)="getQrcode()">
             Gerar QR Code
         </button>
     </c-modal-footer>

@@ -89,9 +89,7 @@ export class SaleComponent {
       
       }
     })
-
   }
-
   getServices(){
     this.serviceProvided.getAll().subscribe()
   }
